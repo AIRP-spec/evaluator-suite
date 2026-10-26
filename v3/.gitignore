@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+dryrun/out/*.log
+dryrun/out/*.partial.jsonl
+__pycache__/
+*.pyc

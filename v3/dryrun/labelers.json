@@ -1,0 +1,4 @@
+[
+  {"name": "labeler-a", "model": "deepseek/deepseek-v3.2", "host": null},
+  {"name": "labeler-b", "model": "deepseek/deepseek-chat-v3.1", "host": null}
+]

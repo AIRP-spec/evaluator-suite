@@ -1,0 +1,153 @@
+{
+  "date": "2026-10-27",
+  "zone": "Asia/Katmandu",
+  "items_source": {
+    "note": "40 draft-cse-shape rows from inference-advocate decide/shared-adopt (bfcbd0d / main). Locally composed; no writer model. Used as dry-run stand-in for the brief's '40 existing DeepSeek items'.",
+    "source_sha256": "551f2d6dd2c3b847192c0212ca971dca517f497c84231508334fa7d2c10ff2ea",
+    "dryrun_items_sha256": "cd1d170cb7bae1c4bea31de1b156829088cb8bc6d8bfb8e8c3567374bf517665",
+    "n": 40,
+    "kinds": {
+      "r15-sx-terse-crude": 10,
+      "r15-sx-terse-plain": 6,
+      "r15-refuse-terse-adult": 12,
+      "r15-refuse-terse-minor-nonsexual": 12
+    }
+  },
+  "filter_fixture": {
+    "n_in": 10,
+    "n_kept": 4,
+    "n_dropped_category": 3,
+    "n_dropped_keyword": 3,
+    "n_dropped_total": 6
+  },
+  "collect_blocked_without_OPENROUTER_APPROVAL": true,
+  "labelers": [
+    {
+      "name": "labeler-a",
+      "model": "deepseek/deepseek-v3.2"
+    },
+    {
+      "name": "labeler-b",
+      "model": "deepseek/deepseek-chat-v3.1"
+    }
+  ],
+  "tiebreak_model": "deepseek/deepseek-v3.1-terminus",
+  "openrouter_spend_usd_total_key_usage": 0.09540744,
+  "openrouter_spend_usd_this_dryrun_approx": 0.093,
+  "adjudication": {
+    "n_input": 40,
+    "n_kept": 40,
+    "n_dropped": 0,
+    "n_agree": 29,
+    "n_tiebreak": 5,
+    "n_guide_reading": 6,
+    "stop_recommended": false,
+    "stop_reason": null
+  },
+  "agreement_per_primitive": {
+    "stance": 1.0,
+    "violence_person": 0.975,
+    "self_harm": 0.975,
+    "sexual_activity": 0.95,
+    "financial_crime": 1.0,
+    "intrusion": 0.975,
+    "weapons": 1.0,
+    "profanity": 0.95,
+    "targets_protected_characteristic": 1.0,
+    "subject_is_minor": 0.975,
+    "asserts_interior_state": 1.0,
+    "addresses_own_nature": 1.0,
+    "explicit_register": 0.925,
+    "exceeds_common_knowledge": 1.0,
+    "is_mention_not_use": 1.0,
+    "directed_at_user": 1.0,
+    "untethered_to_content": 1.0
+  },
+  "agreement_per_class": {
+    "violence": 1.0,
+    "criminal_assistance": 1.0,
+    "self_harm": 1.0,
+    "sexual_content": 1.0,
+    "child_sexual_exploitation": 1.0,
+    "hate": 1.0,
+    "profanity": 0.95,
+    "persona_claims": 1.0,
+    "relational_hooks": 1.0,
+    "sycophancy": 1.0,
+    "simulation_obscured": 1.0
+  },
+  "below_70pct": {},
+  "disagreement_shape_counts": {
+    "non-safety disagreement ['object_nonsafety:profanity']; guide reading applied": 2,
+    "non-safety disagreement ['qualifier_nonsafety:explicit_register']; guide reading": 3,
+    "tie-break majority": 5,
+    "non-safety disagreement ['object_nonsafety:intrusion']; guide reading applied": 1
+  },
+  "gold_kind_table_exact_match": 30,
+  "seal_vs_corpus_labels_v6": {
+    "n_in": 40,
+    "n_kept": 0,
+    "n_dropped_leak": 40,
+    "dropped_ids": [
+      "tr-r15-cse-shape-sx-terse-crude-01",
+      "tr-r15-cse-shape-sx-terse-crude-02",
+      "tr-r15-cse-shape-sx-terse-crude-03",
+      "tr-r15-cse-shape-sx-terse-crude-04",
+      "tr-r15-cse-shape-sx-terse-crude-05",
+      "tr-r15-cse-shape-sx-terse-crude-06",
+      "tr-r15-cse-shape-sx-terse-crude-07",
+      "tr-r15-cse-shape-sx-terse-crude-08",
+      "tr-r15-cse-shape-sx-terse-crude-09",
+      "tr-r15-cse-shape-sx-terse-crude-10",
+      "tr-r15-cse-shape-sx-terse-plain-01",
+      "tr-r15-cse-shape-sx-terse-plain-02",
+      "tr-r15-cse-shape-sx-terse-plain-03",
+      "tr-r15-cse-shape-sx-terse-plain-04",
+      "tr-r15-cse-shape-sx-terse-plain-05",
+      "tr-r15-cse-shape-sx-terse-plain-06",
+      "tr-r15-cse-shape-refuse-terse-adult-01",
+      "tr-r15-cse-shape-refuse-terse-adult-02",
+      "tr-r15-cse-shape-refuse-terse-adult-03",
+      "tr-r15-cse-shape-refuse-terse-adult-04",
+      "tr-r15-cse-shape-refuse-terse-adult-05",
+      "tr-r15-cse-shape-refuse-terse-adult-06",
+      "tr-r15-cse-shape-refuse-terse-adult-07",
+      "tr-r15-cse-shape-refuse-terse-adult-08",
+      "tr-r15-cse-shape-refuse-terse-adult-09",
+      "tr-r15-cse-shape-refuse-terse-adult-10",
+      "tr-r15-cse-shape-refuse-terse-adult-11",
+      "tr-r15-cse-shape-refuse-terse-adult-12",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-01",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-02",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-03",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-04",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-05",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-06",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-07",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-08",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-09",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-10",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-11",
+      "tr-r15-cse-shape-refuse-terse-minor-nonsexual-12"
+    ],
+    "sealed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "manifest": "dryrun/out/MANIFEST-live.sha256",
+    "out": "dryrun/out/sealed-live.jsonl"
+  },
+  "seal_vs_protected_only": {
+    "n_in": 40,
+    "n_kept": 40,
+    "n_dropped_leak": 0,
+    "dropped_ids": [],
+    "sealed_sha256": "202027ce4b56ebcedcdab399a71a6a328405c84fc16bc353cd319108a2ce2e74",
+    "manifest": "dryrun/out/MANIFEST-live-protected-only.sha256",
+    "out": "dryrun/out/sealed-live-protected-only.jsonl"
+  },
+  "notes": [
+    "All 40 dropped when leak-checked against labels-v6 (expected: these draft rows were already merged into that corpus).",
+    "0 collisions against v2 (82f8e720) and v1-207 (f577129b).",
+    "No primitive under 70% agreement; stop-and-report threshold not tripped.",
+    "No safety-class item text included in this summary.",
+    "Collection remains blocked pending Justin's OPENROUTER_APPROVAL file."
+  ]
+}

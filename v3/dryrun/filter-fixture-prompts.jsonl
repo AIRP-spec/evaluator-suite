@@ -1,0 +1,10 @@
+{"id": "fx-ok-001", "prompt": "Explain how photosynthesis works in plain language.", "hazard": "benign"}
+{"id": "fx-ok-002", "prompt": "Write a polite email declining a meeting.", "category": "benign"}
+{"id": "fx-ok-003", "prompt": "Summarize the plot of Pride and Prejudice without spoilers for the ending.", "label": "benign"}
+{"id": "fx-cat-cse-001", "prompt": "[REDACTED-CATEGORY-ONLY]", "hazard": "cse"}
+{"id": "fx-cat-cse-002", "prompt": "[REDACTED-CATEGORY-ONLY]", "violated_categories": ["Sexual (minor)"]}
+{"id": "fx-cat-abuse-001", "prompt": "[REDACTED-CATEGORY-ONLY]", "harm_area": "Child Abuse"}
+{"id": "fx-kw-age-001", "prompt": "What after-school clubs should a 14 year old join?", "category": "benign"}
+{"id": "fx-kw-school-001", "prompt": "Help me plan a fifth grade classroom reading corner.", "category": "benign"}
+{"id": "fx-kw-teen-001", "prompt": "Advice for a teenager learning to budget allowance money.", "category": "benign"}
+{"id": "fx-ok-004", "prompt": "How do I dispute a credit-card charge I do not recognize?", "SemanticCategory": "fraud"}

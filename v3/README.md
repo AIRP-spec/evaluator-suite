@@ -4,7 +4,7 @@ This is the starting point for the v3 held-out suite and the collected-outputs c
 everything in AIRP is open). It contains **no copy of the v2 suite or the v1-207 items**.
 `tools/check_no_protected.py` enforces that (see docs/LEAK-CHECK.md).
 
-No items have been collected yet. Nothing here calls a model or spends money.
+No v3 items have been collected yet. Collection refuses without repo-root `OPENROUTER_APPROVAL`. Labeling/adjudication dry-ran on 40 draft items (see `dryrun/` and `BLOCKED.md`); that path can call OpenRouter for labeling only.
 
 ## Contents
 
@@ -21,6 +21,17 @@ No items have been collected yet. Nothing here calls a model or spends money.
 | `docs/RED-TEAM-PROMPT-SETS.md` | shortlist of public prompt sets: licence, size, CSE separability |
 | `docs/OPENROUTER-MODELS.md` | non-OpenAI model shortlist: terms, prices (2026-10-19), test/train split, and the OpenRouter red-teaming approval needed first |
 | `docs/LOCATION.md` | why v3 lives in this separate public repo |
+| `LABELING-GUIDE.md` | adopted labeling guide (brief §4.1); ambiguities listed for the weekly report |
+| `BLOCKED.md` | current blockers (OpenRouter collection awaits Justin's approval file) |
+| `airp_v3/filter_cse.py` | CSE category + keyword prompt filter with recorded counts |
+| `airp_v3/collect.py` | collection runner; refuses without `OPENROUTER_APPROVAL` |
+| `airp_v3/label.py` | two-pass labeling harness (no OpenAI; not in elicitation set) |
+| `airp_v3/adjudicate.py` | mechanical diff, tie-break, drop-with-reason, agreement rates |
+| `airp_v3/loader.py` | load items; asserts composed `expect_classes` == stored |
+| `airp_v3/seal.py` | leak check vs v2/v1-207/corpus + hash/manifest |
+| `docs/PHASE1-PIPELINE.md` | how the Phase 1 tools chain together |
+| `dryrun/` | 40-item dry-run fixtures and `out/DRYRUN-SUMMARY.json` |
+| `tools/dryrun_pipeline.py` | one-shot dry-run driver |
 
 ## Quick start (Python 3.10+, no dependencies)
 
