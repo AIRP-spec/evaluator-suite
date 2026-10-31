@@ -82,7 +82,9 @@
         "--kv-cache-dtype",
         "fp8",
         "--mamba-ssm-cache-dtype",
-        "float16"
+        "float16",
+        "--max-num-seqs",
+        "256"
       ],
       "chat_template_kwargs": {
         "enable_thinking": false
@@ -90,7 +92,8 @@
       "terms_ref": "NVIDIA Nemotron Open Model License (v. December 15, 2025); https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
       "license_sha256": "409246273b12322fa8b1e6355635970efc34bc8676d9c27f66d0f95e9139cbe7",
       "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
-      "notes": ""
+      "notes": "",
+      "notes_serve": "--max-num-seqs 256: default 1024 exceeds Mamba cache blocks (803) on 96GB RTX PRO 6000 (pod v3c-p4, 2026-11-01); collection concurrency is 64"
     },
     {
       "key": "qwen3-30b-a3b-2507",
