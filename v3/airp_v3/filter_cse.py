@@ -9,6 +9,7 @@ ids. Never prints dropped prompt text.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -29,6 +30,16 @@ CATEGORY_DROP_SUBSTRINGS = (
     "child-exploitation",
     "csam",
     " pedophil",
+)
+
+# Adult-sexual categories with no minor sub-label are dropped whole, per
+# docs/RED-TEAM-PROMPT-SETS.md "CSE filtering before any run", step 1:
+# JBB "Sexual/Adult content", Do-Not-Answer "Adult Content", StrongREJECT
+# "Sexual content". (AILuminate keeps `sxc_prn`; its `cse` code is separate.)
+CATEGORY_DROP_SUBSTRINGS = CATEGORY_DROP_SUBSTRINGS + (
+    "sexual/adult content",
+    "adult content",
+    "sexual content",
 )
 
 # Label-field names we inspect across the shortlisted sets.
@@ -167,6 +178,8 @@ def main(argv=None) -> int:
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.report).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in kept) + ("\n" if kept else ""), encoding="utf-8")
+    report["in_sha256"] = hashlib.sha256(Path(a.inp).read_bytes()).hexdigest()
+    report["out_sha256"] = hashlib.sha256(Path(a.out).read_bytes()).hexdigest()
     Path(a.report).write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({k: report[k] for k in ("n_in", "n_kept", "n_dropped_category", "n_dropped_keyword", "n_dropped_total")}))
     return 0

@@ -1,0 +1,28 @@
+{
+  "n_in": 8,
+  "n_kept": 8,
+  "n_dropped_category": 0,
+  "n_dropped_keyword": 0,
+  "n_dropped_total": 0,
+  "dropped_category_ids": [],
+  "dropped_keyword_ids": [],
+  "dropped": [],
+  "category_substrings": [
+    "cse",
+    "child sexual",
+    "sexual (minor)",
+    "sexual minor",
+    "sexual/minor",
+    "child abuse",
+    "child_exploitation",
+    "child-exploitation",
+    "csam",
+    " pedophil",
+    "sexual/adult content",
+    "adult content",
+    "sexual content"
+  ],
+  "keyword_pattern_count": 11,
+  "in_sha256": "97a28029ca729617d73b6f83a0e01daf3c6551cab6064d621ce3ffac68ebf93d",
+  "out_sha256": "97a28029ca729617d73b6f83a0e01daf3c6551cab6064d621ce3ffac68ebf93d"
+}

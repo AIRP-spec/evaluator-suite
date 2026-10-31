@@ -1,0 +1,184 @@
+{
+  "schema": "airp-v3-selfhost-models/1",
+  "sampling": {
+    "temperature": 0.7,
+    "max_tokens": 800,
+    "system_prompt": null,
+    "template": "model's own chat template, single user turn"
+  },
+  "models": [
+    {
+      "key": "phi-4",
+      "hf_id": "microsoft/phi-4",
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "role": "test",
+      "quantization": "bf16 (none)",
+      "gpu_plan": "RTX A6000 48GB (fallback A40/L40S 48GB)",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--dtype",
+        "bfloat16"
+      ],
+      "chat_template_kwargs": {},
+      "terms_ref": "MIT; https://huggingface.co/microsoft/phi-4/resolve/2db69c1c3e91a05d2c64a3185acfbaf36f744e25/LICENSE; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "c49419617a6070bcb197cfe272f7007fdec3e790dbb529cb995473bd69c0bd51",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "granite-4.2-8b",
+      "hf_id": "ibm-granite/granite-4.2-8b",
+      "revision": "a7042144125ce5ae64f89610e8289647fc000b9a",
+      "role": "test",
+      "quantization": "bf16 (none)",
+      "gpu_plan": "RTX A6000 48GB (fallback A40/L40S 48GB)",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--dtype",
+        "bfloat16"
+      ],
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "terms_ref": "Apache-2.0 (model card license field; repo has no LICENSE file); https://www.apache.org/licenses/LICENSE-2.0; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "01396b1a8596586986fea22cfaa86d0255d19113d71fe09e0b69cc2bfa4307da",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "seed-oss-36b",
+      "hf_id": "ByteDance-Seed/Seed-OSS-36B-Instruct",
+      "revision": "497f1dca95ebdec98e41d517b9f060ee753c902f",
+      "role": "test",
+      "quantization": "bf16 (none)",
+      "gpu_plan": "RTX PRO 6000 Blackwell 96GB",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--dtype",
+        "bfloat16"
+      ],
+      "chat_template_kwargs": {
+        "thinking_budget": 0
+      },
+      "terms_ref": "Apache-2.0; https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct/resolve/497f1dca95ebdec98e41d517b9f060ee753c902f/LICENSE.txt; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "41fe2167e8a52d375dd36304db345312bd629addb2e109e47104a7d34a2cf116",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "nemotron-3-super",
+      "hf_id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "revision": "ff433f5493e25d631c9f12b5d55c674229923d02",
+      "role": "test",
+      "quantization": "nvfp4 (checkpoint-native)",
+      "gpu_plan": "RTX PRO 6000 Blackwell 96GB (Blackwell required for NVFP4)",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--trust-remote-code",
+        "--kv-cache-dtype",
+        "fp8",
+        "--mamba-ssm-cache-dtype",
+        "float16"
+      ],
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "terms_ref": "NVIDIA Nemotron Open Model License (v. December 15, 2025); https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "409246273b12322fa8b1e6355635970efc34bc8676d9c27f66d0f95e9139cbe7",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "qwen3-30b-a3b-2507",
+      "hf_id": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "revision": "0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe",
+      "role": "train",
+      "quantization": "bf16 (none)",
+      "gpu_plan": "RTX PRO 6000 Blackwell 96GB",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--dtype",
+        "bfloat16"
+      ],
+      "chat_template_kwargs": {},
+      "terms_ref": "Apache-2.0; https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507/resolve/0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe/LICENSE; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "05cab46843576551502bfdf712f84e93e6e9590d9997306ed4f6635ef82811d9",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "mistral-small-3.2",
+      "hf_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "revision": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43",
+      "role": "train",
+      "quantization": "bf16 (none)",
+      "gpu_plan": "RTX PRO 6000 Blackwell 96GB",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--tokenizer-mode",
+        "mistral",
+        "--config-format",
+        "mistral",
+        "--load-format",
+        "mistral",
+        "--limit-mm-per-prompt",
+        "{\"image\":0}"
+      ],
+      "chat_template_kwargs": {},
+      "terms_ref": "Apache-2.0 (model card license field; repo has no LICENSE file); https://www.apache.org/licenses/LICENSE-2.0; verdict CLEAR-WITH-CONDITIONS; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "48d492d5ded3dfb80ab53033391c7ada71f42037e442758d9eb29fdb08929edb",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "gemma-4-31b",
+      "hf_id": "google/gemma-4-31B-it",
+      "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+      "role": "train",
+      "quantization": "bf16 (none)",
+      "gpu_plan": "RTX PRO 6000 Blackwell 96GB",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--dtype",
+        "bfloat16",
+        "--limit-mm-per-prompt",
+        "{\"image\":0,\"audio\":0}"
+      ],
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "terms_ref": "Apache-2.0 (Gemma 4 license page); https://ai.google.dev/gemma/docs/gemma_4_license; verdict CLEAR-WITH-CONDITIONS; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "a273a40989a621592709f116cb637c9885da14ba5f503b8af229bb582a4f0ba7",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    },
+    {
+      "key": "glm-4.5-air",
+      "hf_id": "zai-org/GLM-4.5-Air",
+      "revision": "a24ceef6ce4f3536971efe9b778bdaa1bab18daa",
+      "role": "train",
+      "quantization": "fp8 (vLLM online --quantization fp8 from the BF16 checkpoint)",
+      "gpu_plan": "H200 141GB",
+      "vllm_serve_args": [
+        "--max-model-len",
+        "4096",
+        "--quantization",
+        "fp8"
+      ],
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "terms_ref": "MIT (model card license field); https://opensource.org/license/mit; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
+      "license_sha256": "fdcdf454bbb54db5cf1a1dd83152feb6555c4962678cae5c7658bf9cd0261e8b",
+      "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
+      "notes": ""
+    }
+  ]
+}

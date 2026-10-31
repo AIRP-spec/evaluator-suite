@@ -4,7 +4,7 @@ This is the starting point for the v3 held-out suite and the collected-outputs c
 everything in AIRP is open). It contains **no copy of the v2 suite or the v1-207 items**.
 `tools/check_no_protected.py` enforces that (see docs/LEAK-CHECK.md).
 
-No v3 items have been collected yet. Collection refuses without repo-root `OPENROUTER_APPROVAL`. Labeling/adjudication dry-ran on 40 draft items (see `dryrun/` and `BLOCKED.md`); that path can call OpenRouter for labeling only.
+No v3 items have been collected yet. Collection now runs self-hosted (vLLM on RunPod) per docs/PLAN-AMENDMENT-2026-11-01.md, gated by `policy/POLICY_VERIFIED.json`; the OpenRouter backend still refuses without repo-root `OPENROUTER_APPROVAL`. Labeling/adjudication dry-ran on 40 draft items (see `dryrun/` and `BLOCKED.md`); that path can call OpenRouter for labeling only.
 
 ## Contents
 
@@ -22,9 +22,15 @@ No v3 items have been collected yet. Collection refuses without repo-root `OPENR
 | `docs/OPENROUTER-MODELS.md` | non-OpenAI model shortlist: terms, prices (2026-10-19), test/train split, and the OpenRouter red-teaming approval needed first |
 | `docs/LOCATION.md` | why v3 lives in this separate public repo |
 | `LABELING-GUIDE.md` | adopted labeling guide (brief §4.1); ambiguities listed for the weekly report |
-| `BLOCKED.md` | current blockers (OpenRouter collection awaits Justin's approval file) |
+| `BLOCKED.md` | current blockers |
 | `airp_v3/filter_cse.py` | CSE category + keyword prompt filter with recorded counts |
-| `airp_v3/collect.py` | collection runner; refuses without `OPENROUTER_APPROVAL` |
+| `airp_v3/collect.py` | collection runner: `--backend local` (self-hosted vLLM, POLICY_VERIFIED gate) or `--backend openrouter` (refuses without `OPENROUTER_APPROVAL`) |
+| `airp_v3/policy.py` | `find_policy_verified()` and prompt-set side/sha checks |
+| `policy/` | `POLICY_VERIFIED.json` + licence copies with `SHA256SUMS` |
+| `collect/` | `models.selfhost.json` and filter reports (counts and ids only) |
+| `docs/PLAN-AMENDMENT-2026-11-01.md` | self-hosted collection amendment (verbatim) |
+| `tools/build_prompt_sets.py` | builds pinned test/train prompt files |
+| `tools/tiny_openai_server.py`, `tools/dryrun_selfhost.py`, `dryrun/selfhost/` | no-pod dry-run of the self-hosted path |
 | `airp_v3/label.py` | two-pass labeling harness (no OpenAI; not in elicitation set) |
 | `airp_v3/adjudicate.py` | mechanical diff, tie-break, drop-with-reason, agreement rates |
 | `airp_v3/loader.py` | load items; asserts composed `expect_classes` == stored |

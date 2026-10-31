@@ -1,5 +1,7 @@
 # Shortlist: OpenRouter models for collected outputs (no OpenAI)
 
+**Superseded for collection.** v3 plan amendment, 2026-11-01, Justin Flores: Collection runs on self-hosted open-weights models (vLLM on a RunPod pod) instead of OpenRouter. Test: Nemotron-3-Super, Seed-OSS-36B, Phi-4, Granite-4.2-8B. Training: Qwen3-30B-A3B-2507, Mistral-Small-3.2, Gemma-4-31B, GLM-4.5-Air. Llama-3.3-70B (license doubt), MiMo-V2.5, Kimi-K2.5 and DeepSeek-V4-Flash (size) are removed. The prompt sets, CSE filter, no-jailbreak rule, per-row provenance and split rules are unchanged. Collection is gated by POLICY_VERIFIED, which lists each model's verdict, license URL, retrieval date and sha256. Spend comes from the GPU budget ($60, stop at $30). See `PLAN-AMENDMENT-2026-11-01.md`.
+
 Checked 2026-10-19, 08:54 NPT (03:09 UTC). Prices are OpenRouter's public listing
 (`GET https://openrouter.ai/api/v1/models`, response sha256 `2e72edfce4dd022ad66f333503152100406204d37b4c76100e79be5d8cf45e0e`, 471 models; shortlisted entries saved in `openrouter-snapshot-2026-10-19.json`) in **USD per
 1M tokens**, input/output. Per-provider prices come from `GET /api/v1/models/<id>/endpoints` on the same day.
