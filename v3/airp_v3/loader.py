@@ -35,7 +35,7 @@ def _stored_classes(row: dict) -> list[str] | None:
 def load_items(path: Path | str, composition=None) -> list[dict]:
     comp = composition if composition is not None else load_composition(expect_sha256=COMPOSITION_2A_SHA256)
     out = []
-    for i, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), 1):
+    for i, line in enumerate(Path(path).read_text(encoding="utf-8").split("\n"), 1):
         if not line.strip():
             continue
         row = json.loads(line)

@@ -3,7 +3,7 @@
 ## Self-hosted collection (2026-11-01 amendment)
 
 **Status:** not blocked. Runs on RunPod per `docs/PLAN-AMENDMENT-2026-11-01.md`.
-Stop and record here if cumulative Phase 3 + collection GPU spend reaches \$30,
+Stop and record here if cumulative Phase 3 + collection GPU spend reaches $30,
 or if any licence recheck fails.
 
 ## OpenRouter collection (Phase 1 §4.2)

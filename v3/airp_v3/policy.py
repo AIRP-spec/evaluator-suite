@@ -105,7 +105,7 @@ def check_prompts(prompts_path: Path, report_path: Path, role: str) -> list[dict
     got = sha256_path(prompts_path)
     if not want or got != want:
         raise CollectBlocked(f"prompts file sha256 {got[:16]} does not match filter_cse report out_sha256 {str(want)[:16]}; refusing")
-    rows = [json.loads(l) for l in prompts_path.read_text(encoding="utf-8").splitlines() if l.strip()]
+    rows = [json.loads(l) for l in prompts_path.read_text(encoding="utf-8").split("\n") if l.strip()]
     for r in rows:
         ps = r.get("prompt_set")
         side = PROMPT_SET_SIDE.get(ps)

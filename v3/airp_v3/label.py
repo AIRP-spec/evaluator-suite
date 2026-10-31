@@ -234,7 +234,7 @@ def main(argv=None) -> int:
             _forbid(L["model"])
 
     items = []
-    for line in Path(a.items).read_text(encoding="utf-8").splitlines():
+    for line in Path(a.items).read_text(encoding="utf-8").split("\n"):
         if line.strip():
             items.append(json.loads(line))
     if a.limit:
@@ -243,7 +243,7 @@ def main(argv=None) -> int:
     prior = {}
     out_path = Path(a.out)
     if a.resume and out_path.is_file():
-        for line in out_path.read_text(encoding="utf-8").splitlines():
+        for line in out_path.read_text(encoding="utf-8").split("\n"):
             if line.strip():
                 r = json.loads(line)
                 prior[r["id"]] = r

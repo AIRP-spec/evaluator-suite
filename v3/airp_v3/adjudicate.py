@@ -166,8 +166,8 @@ def main(argv=None) -> int:
         if a.tiebreak_model.startswith(("openai/", "~openai/")):
             raise SystemExit("OpenAI forbidden")
 
-    items = {json.loads(l)["id"]: json.loads(l) for l in Path(a.items).read_text().splitlines() if l.strip()}
-    labels = [json.loads(l) for l in Path(a.labels).read_text().splitlines() if l.strip()]
+    items = {json.loads(l)["id"]: json.loads(l) for l in Path(a.items).read_text().split("\n") if l.strip()}
+    labels = [json.loads(l) for l in Path(a.labels).read_text().split("\n") if l.strip()]
     guide = Path(a.guide).read_text(encoding="utf-8")
     comp = load_composition(expect_sha256=COMPOSITION_2A_SHA256)
 

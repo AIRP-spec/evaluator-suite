@@ -113,6 +113,17 @@ class PromptGateTests(unittest.TestCase):
         p, r = write_prompts(self.d, [{"id": "xstest:1", "prompt_set": "xstest", "side": "test", "prompt": "hi"}])
         self.assertEqual(len(check_prompts(p, r, "test")), 1)
 
+    def test_unicode_line_separators_inside_prompts(self):
+        # JSONL rows may carry U+2028 / U+0085 inside strings; str.splitlines() would split them
+        p = self.d / "prompts.jsonl"
+        p.write_text(json.dumps({"id": "aegis2-train:1", "prompt_set": "aegis2-train", "side": "train",
+                                 "prompt": "a\u2028b\x85c\x1cd"}, ensure_ascii=False) + "\n", encoding="utf-8")
+        self.assertIn("\u2028", p.read_text(encoding="utf-8"))
+        r = self.d / "report.json"
+        r.write_text(json.dumps({"out_sha256": sha256_path(p)}))
+        rows = check_prompts(p, r, "train")
+        self.assertEqual(rows[0]["prompt"], "a\u2028b\x85c\x1cd")
+
     def test_refuses_test_set_on_training_model(self):
         p, r = write_prompts(self.d, [{"id": "xstest:1", "prompt_set": "xstest", "prompt": "hi"}])
         with self.assertRaisesRegex(CollectBlocked, "test side"):

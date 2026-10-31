@@ -89,7 +89,7 @@ def build(raw: dict[str, bytes]) -> tuple[list[dict], dict]:
         kind = "benign" if r["label"].strip() == "safe" else "harmful"
         rows.append(row("xstest", r["id"], r["prompt"], kind, type=r.get("type"),
                         label=r.get("label"), note=r.get("note")))
-    msgs = [json.loads(l) for l in gzip.decompress(raw["oasst2-firstturn"]).decode("utf-8").splitlines() if l.strip()]
+    msgs = [json.loads(l) for l in gzip.decompress(raw["oasst2-firstturn"]).decode("utf-8").split("\n") if l.strip()]
     firsts = [m for m in msgs if m.get("parent_id") is None and m.get("role") == "prompter"
               and m.get("lang") == "en" and not m.get("deleted") and m.get("review_result") is not False]
     firsts.sort(key=lambda m: m["message_id"])

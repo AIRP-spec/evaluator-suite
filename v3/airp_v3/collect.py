@@ -177,7 +177,7 @@ def main_openrouter(argv=None) -> int:
         _forbid_openai(m["model"])
 
     prompts = []
-    for line in Path(a.prompts).read_text(encoding="utf-8").splitlines():
+    for line in Path(a.prompts).read_text(encoding="utf-8").split("\n"):
         if line.strip():
             prompts.append(json.loads(line))
     if a.limit:
@@ -293,7 +293,7 @@ def local_row(prompt_row: dict, model: dict, host: str, raw: dict, ts: str, ctx:
 def load_done_ids(out_path: Path) -> set:
     done = set()
     if out_path.is_file():
-        for line in out_path.read_text(encoding="utf-8").splitlines():
+        for line in out_path.read_text(encoding="utf-8").split("\n"):
             if not line.strip():
                 continue
             try:

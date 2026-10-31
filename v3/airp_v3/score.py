@@ -54,7 +54,7 @@ def _read_rows(path):
             return [whole]
     except json.JSONDecodeError:
         pass
-    return [json.loads(l) for l in text.splitlines() if l.strip()]
+    return [json.loads(l) for l in text.split("\n") if l.strip()]
 
 
 def load_items(path, composition, legacy=False, drop_unknown=False, dropped=None):

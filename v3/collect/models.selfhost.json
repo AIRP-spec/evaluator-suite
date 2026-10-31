@@ -103,13 +103,16 @@
         "--max-model-len",
         "4096",
         "--dtype",
-        "bfloat16"
+        "bfloat16",
+        "--moe-backend",
+        "triton"
       ],
       "chat_template_kwargs": {},
       "terms_ref": "Apache-2.0; https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507/resolve/0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe/LICENSE; verdict CLEAR; POLICY_VERIFIED 2026-11-01",
       "license_sha256": "05cab46843576551502bfdf712f84e93e6e9590d9997306ed4f6635ef82811d9",
       "host": "runpod:<pod_id>/<gpu>/vllm-<version> (filled at run time)",
-      "notes": ""
+      "notes": "",
+      "notes_serve": "--moe-backend triton: FlashInfer CUTLASS MoE needs nvcc>=12.8 JIT for sm_120; image ships nvcc 12.4 (2026-11-01 pod v3c-p2b)"
     },
     {
       "key": "mistral-small-3.2",

@@ -161,7 +161,7 @@ def load_rows(path: Path) -> list[dict]:
                 return data[k]
         raise SystemExit(f"unrecognised JSON shape in {path}")
     rows = []
-    for line in raw.splitlines():
+    for line in raw.split("\n"):
         if line.strip():
             rows.append(json.loads(line))
     return rows

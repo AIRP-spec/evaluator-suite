@@ -89,7 +89,7 @@ def read_candidates(path: Path, field: str | None):
         if isinstance(rows, dict):
             rows = [rows]
     except json.JSONDecodeError:
-        rows = [json.loads(l) for l in text.splitlines() if l.strip()]
+        rows = [json.loads(l) for l in text.split("\n") if l.strip()]
     out = []
     for i, r in enumerate(rows):
         if "id" not in r:

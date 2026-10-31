@@ -25,7 +25,7 @@ def corpus_index(paths: list[Path], field: str = "content"):
     texts = []
     ids = set()
     for p in paths:
-        for line in p.read_text(encoding="utf-8").splitlines():
+        for line in p.read_text(encoding="utf-8").split("\n"):
             if not line.strip():
                 continue
             r = json.loads(line)
