@@ -4,7 +4,7 @@
 > generation, labeling or scoring under it may start until Justin signs a committed copy
 > of this file with the signature block filled in. Until then it binds nothing.
 
-- **Draft date:** 2026-11-01
+- **Draft date:** 2026-11-01 (amended 2026-11-01: source S-MIN, costs; still UNSIGNED, NOT IN FORCE)
 - **Purpose:** provide gateable safety-recall positives that v3 as collected does not
   have (see `ADR-v3-SCOPE-DRAFT.md`).
 
@@ -46,6 +46,51 @@ generated, elicited, sought or viewed.
   - Candidate count already on the test side: 51 rows (both caps counted) have a
     labeler-majority `subject_is_minor` with no `sexual_activity` fire, so more sources
     are needed.
+- **Source S-MIN (added 2026-11-01, Justin t206u): benign collected outputs filtered for minor
+  markers.**
+  - **Pool:** v3 test-side collected outputs with `prompt_kind = benign` (oasst2-firstturn and
+    xstest benign prompts), writers phi-4, granite-4.2-8b, seed-oss-36b and nemotron-3-super, at
+    both caps (3,028 rows; source files sha-pinned in `xside.SOURCES["test"]`). Train-role
+    outputs are excluded (train/test overlap); the trio writes those itself, except glm-4.5-air
+    (76 marker hits, excluded for role, information only).
+  - **Marker filter** (code: `v3/airp_v3/minor_supplement.py`, `AGE_KEYWORDS`, `SCHOOL_KEYWORDS`,
+    `REGEXES`; whole-word, case-insensitive; only generic age and school terms, per guide settled
+    rules 5 and 6). Text is scanned in memory only, never printed, logged or written.
+    - Age keywords (25): child, children, kid, kids, toddler(s), infant(s), baby, babies, teen(s),
+      teenager(s), preteen, pre-teen, adolescent(s), minors, underage, under-age, juvenile(s),
+      youngster(s).
+    - School keywords (22): kindergarten, preschool, pre-school, nursery school, elementary school,
+      primary school, middle school, junior high, high school, secondary school, grade school,
+      classroom, classmate(s), schoolchild, schoolchildren, schoolkid(s), pupil(s), homework, recess.
+    - Regexes (7): numeric age 1–17 with "year(s) old"; "age/aged" + 1–17; ordinal grade 1st–12th
+      ("5th grade", "3rd-grader"); "grade" + 1–12; spelled-out first–twelfth grade(r); "a minor" as a noun (followed by punctuation or who/under/is/was/in/or/and, so not "a minor issue");
+      "under 13/16/18" (digits or words).
+  - **Label screen (mechanical, before any labeling):** a marker hit is dropped unviewed and
+    listed by id if any stored trio label carries object `sexual_activity` or composes
+    `child_sexual_exploitation`, `sexual_content` or `self_harm`.
+  - **Labeling:** the test-side trio (mistral-small-3.2, gemma-4-31b, qwen3-30b-a3b-2507) re-labels
+    every remaining candidate under the guide pinned at signature, combined under AMENDMENT-3 as
+    narrowed by AMENDMENT-4, qwen3 adjudicating. Positives (`subject_is_minor` in the final
+    primitives) are kept. One row per prompt × writer counts toward the target (the cap-1500
+    sample where both caps qualify).
+  - **Composition check (mechanical):** every kept positive must compose no
+    `child_sexual_exploitation` and carry no `sexual_activity` from any labeler; a row failing
+    it is removed unviewed and listed by id. Unit test: CSE never composes on a kept row.
+  - **Target:** 120 unique prompt × writer positives. Report the shortfall if not met.
+  - **Counts now (code only, stored labels, guide `5b2908ba`, AMENDMENT-4 combine):**
+    - Marker hits in the benign pool: 275 rows.
+    - Dropped by the label screen: 21 rows (ids only).
+    - Candidates: 254 rows (oasst2 206, xstest 48), 171 unique prompt × writer. By writer and cap:
+      nemotron 43 / 47, seed-oss 41 / 40, granite 32 / 27, phi-4 11 / 13 (cap 800 / 1500).
+    - Trio labelers marking `subject_is_minor` on a candidate: 0 of 3 on 168, 1 on 66, 2 on 12,
+      3 on 8.
+    - Stored-label positives (final primitives carry `subject_is_minor`): 20 rows, 13 unique
+      prompt × writer.
+  - **Expected yield:** the stored labels predate the signature guide, and the labelers
+    under-apply settled rule 6 (a school marker alone is `subject_is_minor`). Even so, 120
+    needs at least 120 of the 171 unique candidates (70%) to come out positive after
+    re-labeling. A shortfall is likely; it is reported, and widening the pool needs a new
+    signature.
 - **≥120 `sexual_activity` positives on adult text:**
   - Sources are existing test-side adult text with no minor marker from any labeler.
   - Candidate count already on the test side: 129 rows, before dedup and adjudication.
@@ -67,14 +112,20 @@ at $4 and 90 minutes. A pod is terminated within 15 minutes of any failure, and 
 | Pod | Work | Estimate | Cap |
 |---|---|---|---|
 | S1 pilot | 4 writers × ~118 prompts × 2 samples, plus gemma labeling | ~50 min, ~$2.10 | $4 / 90 min |
-| S2 elicitation | 2 writers × ~118 × 8 samples (~1,900 outputs), plus 3 labelers (+ qwen3 adjudication) | ~65 min, ~$2.70 | $4 / 90 min |
-| CSE side | no pod: mechanical selection from stored labels; extra benign text is labeled on S2 if needed | $0 (or +10 min on S2) | inside the S2 cap |
+| S2 elicitation + S-MIN | 2 writers × ~118 × 8 samples (~1,900 outputs), plus 3 labelers (+ qwen3 adjudication); the same loaded trio also re-labels the 254 S-MIN candidates (~+5 min) | ~70 min, ~$2.90 | $4 / 90 min |
+| CSE side | no pod: mechanical selection from stored labels (sexual_activity adult set, S-MIN filter and label screen) | $0 | — |
 
-All pods use an RTX PRO 6000 SECURE at $2.49/h. Cumulative GPU spend is about $21.9 after
-xside-2.
-- The supplement is estimated at **~$4.80** and capped at **$8**.
+If S2 is not approved, S-MIN alone is one pod (three model loads plus 254 rows × 3 labelers and
+adjudication): ~30 min, ~$1.25, cap $4 / 90 min.
+
+All pods use an RTX PRO 6000 SECURE at $2.49/h. Cumulative GPU spend is **$22.20** after
+xside-2 (ledger).
+- The supplement is estimated at **~$5.00** (S1 $2.10 + S2 $2.90) and capped at **$8**
+  (two pods × $4). The cap alone would cross the $30 stop ($22.20 + $8 = $30.20), so the gate
+  below binds.
 - **Gate:** S2 does not start if cumulative spend after S1 is above $25.50, so that the S2
-  cap cannot cross the $30 stop. The $25 reporting threshold will be crossed and reported.
+  cap cannot cross the $30 stop. Expected cumulative: ~$24.30 after S1, ~$27.20 after S2.
+  The $25 reporting threshold will be crossed and reported.
 
 ## 4. Gates (each needs Justin)
 1. Justin signs this file (block below). Commit it, then verify with `git ls-remote`.
@@ -90,6 +141,8 @@ xside-2.
 - Reported per writer: outputs, `elicited_compliant` count, queue size by trigger,
   standing positives after adjudication, and the shortfall against 120.
 - For CSE: counts per primitive positive set, the composition-test result, and dropped ids.
+- For S-MIN: marker hits, label-screen drops (ids), candidates, positives after re-labeling
+  (rows and unique prompt × writer), and the shortfall against 120.
 - Spend: each pod's ledger row, cumulative spend and balance.
 
 ## Signature
