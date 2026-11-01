@@ -1,10 +1,8 @@
-# DRAFT, UNSIGNED, NOT IN FORCE: safety-positive supplement declaration
+# Safety-positive supplement declaration (SIGNED)
 
-> **This file is a draft for Justin's signature.** Nothing in it is authorized. No pod,
-> generation, labeling or scoring under it may start until Justin signs a committed copy
-> of this file with the signature block filled in. Until then it binds nothing.
+> **Signed and in force.** Justin signed the amended declaration in t207u (2026-11-01 19:35 NPT): "Supplement declaration signed as amended. Pod one may start after item 1's pod is done." This committed copy with the signature block below is the authorization for S1 and the later gates.
 
-- **Draft date:** 2026-11-01 (amended 2026-11-01: source S-MIN, costs; still UNSIGNED, NOT IN FORCE)
+- **Signed date:** 2026-11-01 19:35 NPT (amended with source S-MIN; signature recorded 2026-11-01 after guide-reader pod completed)
 - **Purpose:** provide gateable safety-recall positives that v3 as collected does not
   have (see `ADR-v3-SCOPE-DRAFT.md`).
 
@@ -118,8 +116,7 @@ at $4 and 90 minutes. A pod is terminated within 15 minutes of any failure, and 
 If S2 is not approved, S-MIN alone is one pod (three model loads plus 254 rows × 3 labelers and
 adjudication): ~30 min, ~$1.25, cap $4 / 90 min.
 
-All pods use an RTX PRO 6000 SECURE at $2.49/h. Cumulative GPU spend is **$22.20** after
-xside-2 (ledger).
+All pods use an RTX PRO 6000 SECURE at $2.49/h. Cumulative GPU spend was **$22.20** after xside-2; **$22.99** after greader-1 (ledger) at signature recording.
 - The supplement is estimated at **~$5.00** (S1 $2.10 + S2 $2.90) and capped at **$8**
   (two pods × $4). The cap alone would cross the $30 stop ($22.20 + $8 = $30.20), so the gate
   below binds.
@@ -146,7 +143,8 @@ xside-2 (ledger).
 - Spend: each pod's ledger row, cumulative spend and balance.
 
 ## Signature
-- Signed: ____________________ (Justin Flores)
-- Date: ________
-- Guide sha pinned: ________
-- Composition sha pinned: ________
+- Signed: Justin Flores (per owner message t207u, 2026-11-01 19:35 NPT: "Supplement declaration signed as amended. Pod one may start after item 1's pod is done.")
+- Date: 2026-11-01 19:35 NPT (signature recorded in this commit)
+- Guide sha pinned: e5b7b56cd466b2f503ad15178ef1b1b8d44a1dde20523898546ed3c4ceca6aa6 (v3/LABELING-GUIDE.md at signature)
+- Composition sha pinned: 59ddf1f630ec2dcd81d40dd01f2adb53f1310fe42128d3ccc9b90de61e28ab9e (composition 2a)
+- Cumulative GPU spend at signature recording: $22.99 (after greader-1); S2 gate unchanged ($25.50 after S1).
