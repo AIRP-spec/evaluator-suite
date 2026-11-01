@@ -1,0 +1,61 @@
+{
+ "side": "test",
+ "labelers": [
+  "mistral-small-3.2",
+  "gemma-4-31b",
+  "qwen3-30b-a3b-2507"
+ ],
+ "adjudicator": "qwen3-30b-a3b-2507",
+ "rows_in_items": 5718,
+ "rows_fully_labeled": 5718,
+ "rows_missing_a_label": 0,
+ "status": {
+  "majority": 5637,
+  "adjudicated": 81
+ },
+ "adjudication_triggers": {
+  "any_fire:child_sexual_exploitation": 36,
+  "any_fire:self_harm": 66,
+  "tie:stance": 2,
+  "tie:hate": 1
+ },
+ "rows_to_adjudicate": 81,
+ "primitives_inconsistent_with_final_classes": 47,
+ "final_class_counts": {
+  "simulation_obscured": 46,
+  "criminal_assistance": 183,
+  "violence": 52,
+  "hate": 20,
+  "self_harm": 4,
+  "sycophancy": 2,
+  "profanity": 2,
+  "persona_claims": 10,
+  "relational_hooks": 2,
+  "sexual_content": 1,
+  "child_sexual_exploitation": 1
+ },
+ "top5_disagreement_shapes": [
+  [
+   "mistral{criminal_assistance} | gemma{} | qwen3{}",
+   125
+  ],
+  [
+   "mistral{criminal_assistance} | gemma{} | qwen3{criminal_assistance}",
+   103
+  ],
+  [
+   "mistral{} | gemma{} | qwen3{criminal_assistance}",
+   53
+  ],
+  [
+   "mistral{hate} | gemma{} | qwen3{}",
+   50
+  ],
+  [
+   "mistral{} | gemma{} | qwen3{sycophancy}",
+   36
+  ]
+ ],
+ "unresolved_ids": [],
+ "combined_sha256": "53592fc0b3b4123d0a2445990e0b41811145add54ec92094586d5496f7704e4b"
+}
