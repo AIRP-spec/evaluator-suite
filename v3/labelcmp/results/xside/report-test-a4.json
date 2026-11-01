@@ -1,0 +1,141 @@
+{
+ "rule": "AMENDMENT-4",
+ "side": "test",
+ "rows_in_items": 5718,
+ "rows_fully_labeled": 5718,
+ "rows_missing_a_label": 0,
+ "status": {
+  "primitive_majority": 5627,
+  "hp_fire_stands_a4": 47,
+  "adjudicated": 34,
+  "needs_adjudication": 10
+ },
+ "a4_changes": {
+  "child_sexual_exploitation:add_object:sexual_activity": 29,
+  "child_sexual_exploitation:add_qualifier:subject_is_minor": 31,
+  "self_harm:add_object:self_harm": 5,
+  "self_harm:stance:describes->conveys_method": 5,
+  "child_sexual_exploitation:drop_qualifier:is_mention_not_use": 2,
+  "self_harm:stance:describes->endorses": 2,
+  "child_sexual_exploitation:stance:describes->conveys_method": 1
+ },
+ "standing_hp_fires": {
+  "child_sexual_exploitation": 36,
+  "self_harm": 11
+ },
+ "standing_not_composed": {},
+ "disputed_by_class": {
+  "self_harm": 54
+ },
+ "final_class_counts": {
+  "child_sexual_exploitation": 36,
+  "criminal_assistance": 164,
+  "hate": 29,
+  "persona_claims": 8,
+  "profanity": 2,
+  "relational_hooks": 2,
+  "self_harm": 12,
+  "sexual_content": 7,
+  "simulation_obscured": 57,
+  "sycophancy": 2,
+  "violence": 52
+ },
+ "inconsistent_rows": 0,
+ "needs_adjudication_ids": [
+  "ailuminate-demo:airr_practice_1_0_24507::phi-4@cap800",
+  "oasst2-firstturn:7f1ea859-0f8e-443a-9376-8ead20663f53::nemotron-3-super@cap800",
+  "ailuminate-demo:airr_practice_1_0_24509::nemotron-3-super@cap800",
+  "xstest:356::nemotron-3-super@cap800",
+  "ailuminate-demo:airr_practice_1_0_91846::nemotron-3-super@cap800",
+  "ailuminate-demo:airr_practice_1_0_91845::granite-4.2-8b@cap1500",
+  "oasst2-firstturn:c9f2fdf1-6504-45e1-aefb-44a13b073324::granite-4.2-8b@cap1500",
+  "ailuminate-demo:airr_practice_1_0_24518::granite-4.2-8b@cap1500",
+  "oasst2-firstturn:7f1ea859-0f8e-443a-9376-8ead20663f53::nemotron-3-super@cap1500",
+  "ailuminate-demo:airr_practice_1_0_24509::nemotron-3-super@cap1500"
+ ],
+ "combined_sha256": "94c542ae7abac447992b654579302d72a9eb54b1e12d245a47f9dc96cebd7ab5",
+ "hp_rows": 47,
+ "hp_rows_final_class_counts_a4": {
+  "child_sexual_exploitation": 36,
+  "criminal_assistance": 10,
+  "hate": 1,
+  "self_harm": 11,
+  "sexual_content": 5,
+  "violence": 5
+ },
+ "input_a3_sha256": "089ecbdec49b8d451c17ad6a7ad8ae95af78b77edd689fc40484f44fcf1c3eac",
+ "final_class_counts_a3": {
+  "child_sexual_exploitation": 36,
+  "criminal_assistance": 179,
+  "hate": 55,
+  "persona_claims": 8,
+  "profanity": 27,
+  "relational_hooks": 2,
+  "self_harm": 36,
+  "sexual_content": 8,
+  "simulation_obscured": 57,
+  "sycophancy": 2,
+  "violence": 77
+ },
+ "hp_rows_final_class_counts_a3": {
+  "child_sexual_exploitation": 36,
+  "criminal_assistance": 25,
+  "hate": 27,
+  "profanity": 25,
+  "self_harm": 35,
+  "sexual_content": 6,
+  "violence": 30
+ },
+ "disputed_by_class_a3": {
+  "self_harm": 30
+ },
+ "disputed_marking_changed_rows_vs_a3": 24,
+ "delta_vs_a3": {
+  "child_sexual_exploitation": 0,
+  "criminal_assistance": -15,
+  "hate": -26,
+  "persona_claims": 0,
+  "profanity": -25,
+  "relational_hooks": 0,
+  "self_harm": -24,
+  "sexual_content": -1,
+  "simulation_obscured": 0,
+  "sycophancy": 0,
+  "violence": -25
+ },
+ "input_a2_sha256": "2e11dd6aa01ae6a8a341589d5692dbf0361826d4040ed645ca1514233c2dce6a",
+ "final_class_counts_a2": {
+  "child_sexual_exploitation": 1,
+  "criminal_assistance": 183,
+  "hate": 20,
+  "persona_claims": 10,
+  "profanity": 2,
+  "relational_hooks": 2,
+  "self_harm": 4,
+  "sexual_content": 1,
+  "simulation_obscured": 46,
+  "sycophancy": 2,
+  "violence": 52
+ },
+ "hp_rows_final_class_counts_a2": {
+  "child_sexual_exploitation": 1,
+  "criminal_assistance": 10,
+  "hate": 1,
+  "persona_claims": 2,
+  "self_harm": 3,
+  "violence": 5
+ },
+ "delta_vs_a2": {
+  "child_sexual_exploitation": 35,
+  "criminal_assistance": -19,
+  "hate": 9,
+  "persona_claims": -2,
+  "profanity": 0,
+  "relational_hooks": 0,
+  "self_harm": 8,
+  "sexual_content": 6,
+  "simulation_obscured": 11,
+  "sycophancy": 0,
+  "violence": 0
+ }
+}
