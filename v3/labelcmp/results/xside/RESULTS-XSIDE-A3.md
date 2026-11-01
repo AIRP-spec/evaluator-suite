@@ -67,3 +67,27 @@ Before and after are identical by construction, because no labeler was re-run.
   - mistral: 4 misses, 8 false fires;
   - gemma: 4 misses, 3 false fires;
   - qwen3: 13 misses, 48 false fires, 45 of them on safety-kind gold rows.
+
+## Train side (xside-2): adjudication queue for Justin
+- **Labelers:** seed-oss-36b labeled 5,723 of 5,723 rows (5,717 valid), merged with
+  nemotron-3-super (5,723 valid).
+- **The agent adjudicated nothing.** Every queued row has status `pending_justin`.
+- **Queue:** 849 of 5,723 rows; 4,874 rows agree. The queue is identical in size under A2
+  and A3.
+
+| Trigger | A2 | A3 |
+|---|---|---|
+| class_disagreement | 843 | 843 |
+| second_invalid (seed) | 6 | 6 |
+| self_harm fire (A2 `fire:self_harm`, A3 `lp_fire:self_harm`) | 2 | 2 |
+| hp_fire_stands_unless_mention_or_refusal | — | 0 |
+| queued_with_cse_fire | 0 | 0 |
+
+- **Why A3 changes nothing on train:**
+  - Neither train labeler reaches self_harm gold precision ≥ 0.95 (nemotron 0.889,
+    seed 0.205).
+  - nemotron's CSE precision (0.984) qualifies as high precision, but it fired CSE on
+    0 rows.
+- **Top disagreement shape:** nemotron{} | seed{sycophancy} on 351 rows.
+- **Files:** `QUEUE-train-a3.jsonl` (ids, both labelers' primitives and classes, trigger
+  reasons, CSE flag; no item text), `report-train-a3.json`, and `report-train-a2.json`.
