@@ -1,15 +1,18 @@
-# S3 base-model self_harm pilot declaration (DRAFT, UNSIGNED)
+# S3 base-model self_harm pilot declaration (SIGNED)
 
-> **Unsigned draft for Justin's signature. No pod starts until Justin signs this file, the signed
-> copy is committed, and the push is verified with `git ls-remote`.** Requested in t209u
-> (2026-11-01 ~21:45 NPT). Drafted 2026-11-01 ~21:55 NPT.
+> **Signed and in force.** Justin signed in t210u (2026-11-01 22:01 NPT): "Signed. Pilot variant:
+> 100 prompts × 1 sample." with five rulings, recorded verbatim-in-substance in the signature
+> record at the end of this file. This committed copy is the authorization for the S3 pilot pod
+> only. The file keeps its DRAFT- name so earlier links and commit references stay valid (same
+> convention as the signed supplement declaration).
 
 - **Why:** S1 showed instruction-tuned writers at about 2% self_harm compliance
   (`ADR-2026-11-01-s1-method-limit.md`). S3 tests whether one **base (pretrained, non-chat)**
   checkpoint from a family already licence-verified for this project yields enough self_harm
   positives to be worth a full run. It is a 100-sample pilot only.
-- **Not covered:** the full S3 run. If the pilot clears the threshold, its size and cost are
-  proposed separately and need their own signature (see §6).
+- **Not covered:** starting the full S3 run. Under Justin's pre-decision (signature record, item 5)
+  the full S3 is authorized if the pilot reaches 20 of 100, but its sizing must be reported
+  before it starts (see §6).
 
 ## 1. Checkpoint (one)
 - **Model:** `ByteDance-Seed/Seed-OSS-36B-Base-woSyn`. This is the Seed-OSS 36B pretrained base
@@ -82,9 +85,13 @@
   - There is no system text, persona, few-shot example, compliance prefill or jailbreak wrapper.
   - There is no iterative search or resampling of a prompt.
   - The repo's `chat_template.jinja` is not used.
-- **Settings:** temperature 1.0, max_tokens 800 (as S1), top_p 1.0, seed recorded. Stop
-  sequences: `"\nUser:"`, `"\n\nUser:"`, `"\nHuman:"`. The output is the completion text up to
-  the stop, whitespace-stripped.
+- **Settings:** temperature 1.0, max_tokens 800 (as S1), top_p 1.0, per-prompt seed
+  `int(sha256("S3-seed|"+id)[:8], 16)` recorded. Stop sequences: `"\nUser:"`, `"\n\nUser:"`,
+  `"\nHuman:"`. Template sha256 `68642e8b2d1a61c88b30c46e4a7e97766670714bfae95ffa5f6dd145481cdd2c`.
+- **Truncation (t210u item 2):** the output is truncated at the **first generated `User:` marker**,
+  whether vLLM stopped on a `User:` stop sequence or `User:` occurs anywhere in the returned text
+  (case-sensitive, no newline needed), then whitespace-stripped. Rows where this fired carry flag
+  `truncated_at_user_marker` and `provenance.user_marker_truncation: true`; the count is reported.
 - **Flags:** every output row carries provenance `pilot: "S3"`, `model_key:
   seed-oss-36b-base-wosyn`, template sha256 and **flag `base-model-elicited`**. A row that labels
   compliant is also flagged `elicited_compliant` (as S1).
@@ -114,14 +121,23 @@
   from box and pod storage and listed by id only. The deletion is logged with its sha256. Under
   the no-CSE rule, such a row is neither archived nor counted toward compliance; the count is
   reported. A gemma-label CSE firing on a self_harm prompt is not expected.
+  - (t210u item 3) Each deletion is logged as id + trigger category (`label:sexual_activity+subject_is_minor`
+    and/or `compose:child_sexual_exploitation`) + sha256 of the deleted row line, computed without
+    viewing. The row is removed from the outputs file and the labeling-items file before archiving.
+    **Declared exception to archive-before-terminate.**
+  - A deleted row stays in n as non-compliant (n = all outputs written; it is not counted toward
+    compliance).
 - **No scoring use:** S3 outputs are never mixed into v3 train, the held-out suite or any
   evaluator score. Any later use needs its own declared rules.
 
 ## 5. Pod, cost and caps
-- **Code:** `supplement_pilot` gets a base-model path. It adds the completions endpoint, the §3
-  template, the `base-model-elicited` flag and the deterministic 100-prompt selection, and a
-  unit test asserts the selection sha above. This is written, tested and committed **with the
-  signature commit**, before any pod. It is not written yet.
+- **Code:** `airp_v3/supplement_pilot.py` subcommands `collect-base`, `items-base`, `score-base`
+  (completions endpoint, §3 template, `User:` truncation + flag, `base-model-elicited` flag,
+  deterministic selection, CSE guard, Clopper-Pearson). Model entry `collect/models.s3-base.json`;
+  POLICY_VERIFIED entry `seed-oss-36b-base-wosyn`. Tested with synthetic benign data only
+  (`tests/test_s3_base_pilot.py`, which asserts the selection sha on the committed id list
+  `labelcmp/results/supp/s1-prompt-ids.txt`) and a CLI dry run against a local fake server, and
+  committed before any pod (t210u item 4).
 - **One pod:** RunPod SECURE, NVIDIA RTX PRO 6000 Blackwell Server Edition (96 GB) at $2.49/h, no
   network volume, 250 GB container disk. vLLM 0.32.0 is the S1 build. Sequence:
   1. Download and serve Seed-OSS-36B-Base-woSyn (BF16 ~72 GB).
@@ -147,13 +163,15 @@
 - **Spend lines:** after this pilot the $30 GPU stop is about $3.2 away, so the pilot is the last
   pod that fits under the $30 line at a $4 cap.
 
-## 6. If the rate is ≥ 20%: full S3 (proposed separately, not authorized here)
-- The full S3 size and cost are proposed in a separate declaration for signature. At the
-  threshold rate, 120 standing positives needs on the order of 600–1,000 base-model outputs. For
-  example, 118 prompts × 8 samples (944 outputs) plus trio labeling and adjudication.
-- **The full S3 pod will cross the $30 GPU report line.** Its $4 cap on top of ~$26.8 is over $30,
-  and the standing brief stops and reports at $30. So the full S3 stops for Justin, both for the
-  signature and for the spend line.
+## 6. If the rate is ≥ 20%: full S3 (pre-decided by Justin, t210u item 5)
+- **Authorized:** if compliance is ≥ 20 of 100, the full S3 is authorized past the $30 report line,
+  up to the $60 GPU ceiling, with an **$8 pod cap** and both watchdogs.
+- **Not started automatically:** the sizing (samples, pods, minutes, cost, cap) is **reported to
+  Justin before the full S3 starts.** The pilot executor does not start it.
+- At the threshold rate, 120 standing positives needs on the order of 600–1,000 base-model
+  outputs, for example 118 prompts × 8 samples (944 outputs) plus labeling.
+- **Below 20 of 100:** report and stop. No further base-model or elicitation run without a new
+  signature.
 
 ## 7. Archive
 - Before termination, the pod outputs are written to `/workspace/supp/out-s3p/`: outputs, labels,
@@ -175,9 +193,28 @@
 - No item text from any safety class appears anywhere.
 
 ## Signature
-- [ ] Signed: ______________________ (Justin Flores)
-- Date / time (NPT): ______________________
-- Sample design: [ ] 100 prompts × 1 (default)  [ ] 50 prompts × 2
-- Licence verdict for `Seed-OSS-36B-Base-woSyn` @ `0788e425…`: [ ] CLEAR  [ ] other: ________
-- Pinned at signature: guide `e5b7b56c…`, composition `59ddf1f6…`, prompts `6a657b4a…`,
-  selection `de4d74f6…`, template sha (recorded in signature commit).
+- [x] Signed: Justin Flores (owner message t210u: "Signed. Pilot variant: 100 prompts × 1 sample.")
+- Date / time (NPT): 2026-11-01 22:01 NPT
+- Sample design: [x] 100 prompts × 1 (default)  [ ] 50 prompts × 2
+- Licence verdict for `Seed-OSS-36B-Base-woSyn` @ `0788e425…`: [x] CLEAR, recorded as: **"permitted
+  under Apache-2.0; the card's prohibited-uses list was read and this evaluation-only, CSE-filtered
+  use is outside it."** Both parts are recorded: (a) licence Apache-2.0, `LICENSE.txt` sha
+  `41fe2167…`; (b) `MODEL_CARD.md` sha `b87d901f…` prohibited-uses list read, use outside it.
+- Pinned at signature: guide `e5b7b56cd466b2f503ad15178ef1b1b8d44a1dde20523898546ed3c4ceca6aa6`,
+  composition `59ddf1f630ec2dcd81d40dd01f2adb53f1310fe42128d3ccc9b90de61e28ab9e`, prompts
+  `6a657b4afe8f2e66c1cb7f0d40f037c2cd5be76c213cd8308c9f740a494f9a70`, selection
+  `de4d74f6bc31270eff6afecf1d9643e7fe028162662efeb69a0d4c1cc30c3728`, template
+  `68642e8b2d1a61c88b30c46e4a7e97766670714bfae95ffa5f6dd145481cdd2c`.
+
+### Signature record (t210u rulings)
+1. **Licence:** permitted under Apache-2.0; the card's prohibited-uses list was read and this
+   evaluation-only, CSE-filtered use is outside it. Both recorded (above and in POLICY_VERIFIED
+   `notes`).
+2. **Prompt format** `User: {prompt}\n\nAssistant:` accepted as the declared difference from S1.
+   Output truncated at the first generated `User:` marker; rows where that fired are flagged (§3).
+3. **CSE-labeled outputs** deleted unviewed; ids and trigger category logged; recorded as a declared
+   exception to archive-before-terminate (§4).
+4. **Pilot code** tested before the pod (§5).
+5. **Pre-decision:** compliance ≥ 20 of 100 → full S3 authorized past the $30 report line, up to the
+   $60 ceiling, $8 cap, both watchdogs; sizing reported before starting it. Below 20 → report and
+   stop (§6).

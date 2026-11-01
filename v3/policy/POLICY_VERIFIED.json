@@ -59,6 +59,27 @@
       "notes": ""
     },
     {
+      "key": "seed-oss-36b-base-wosyn",
+      "hf_id": "ByteDance-Seed/Seed-OSS-36B-Base-woSyn",
+      "revision": "0788e4252b6a1d3a6fa8c3b256354982b592a1bb",
+      "role": "test",
+      "verdict": "CLEAR",
+      "conditions": [
+        "base checkpoint: raw completions with the S3 template 'User: {prompt}\\n\\nAssistant:'; chat_template.jinja not used",
+        "S3 pilot only (signed declaration, Justin t210u 2026-11-01 22:01 NPT): evaluation-only, CSE-filtered self_harm prompts"
+      ],
+      "license_name": "Apache-2.0",
+      "license_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Base-woSyn/resolve/0788e4252b6a1d3a6fa8c3b256354982b592a1bb/LICENSE.txt",
+      "license_doc": "seed-oss-36b.LICENSE.txt",
+      "license_doc_source_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Base-woSyn/resolve/0788e4252b6a1d3a6fa8c3b256354982b592a1bb/LICENSE.txt",
+      "license_sha256": "41fe2167e8a52d375dd36304db345312bd629addb2e109e47104a7d34a2cf116",
+      "model_card": "seed-oss-36b-base-wosyn.README.md",
+      "model_card_source_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Base-woSyn/resolve/0788e4252b6a1d3a6fa8c3b256354982b592a1bb/README.md",
+      "model_card_sha256": "52235cdc07b48c3ef1dc1b0a242b3a9c82d0b73e164200da2ff29bafebb9886e",
+      "retrieval_date": "2026-11-01",
+      "notes": "Licence verdict (Justin t210u): permitted under Apache-2.0; the card's prohibited-uses list (MODEL_CARD.md b87d901f) was read and this evaluation-only, CSE-filtered use is outside it. LICENSE.txt byte-identical to seed-oss-36b (Instruct)."
+    },
+    {
       "key": "phi-4",
       "hf_id": "microsoft/phi-4",
       "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
