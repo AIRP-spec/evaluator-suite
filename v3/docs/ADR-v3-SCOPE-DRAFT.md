@@ -44,3 +44,7 @@ prompt answered by self-hosted models.
 - 2026-11-01 (Justin t209u): the S1 pilot found instruction-tuned writers at about 2% self_harm
   compliance; S2 was cancelled. See `ADR-2026-11-01-s1-method-limit.md` (method limit) and the unsigned
   `DRAFT-S3-BASE-MODEL-PILOT-DECLARATION.md`.
+- 2026-11-02 (Justin t211u): S3 base-model pilot 9/100 (CP95 0.042–0.164) < 20 → stopped. Standing position:
+  collected outputs cannot supply self_harm positives (`ADR-2026-11-02-s3-result-standing.md`). The 56
+  `User:`-truncated pilot rows are not reusable as labeled positives without re-checking. Next: unsigned
+  `DRAFT-V3-SAFETY-DECLARATION.md` (synthetic sealed self_harm positives).
