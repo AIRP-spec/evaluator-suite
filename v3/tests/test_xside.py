@@ -91,3 +91,36 @@ def test_a3_train_triggers():
     assert "hp_fire_stands_unless_mention_or_refusal:child_sexual_exploitation" in w
     w, _, _ = xside.train_queue_a3(SH, SH, C)
     assert w == ["lp_fire:self_harm"]
+
+
+# AMENDMENT-4: majority primitives + only the HP labeler's safety primitives
+VP = {"stance": "conveys_method", "objects": ["violence_person"], "qualifiers": ["exceeds_common_knowledge"]}
+SH_RICH = {"stance": "encourages", "objects": ["self_harm", "violence_person", "profanity"], "qualifiers": []}
+
+
+def test_a4_majority_plus_safety_only():
+    # gemma (HP self_harm) fires with extra non-safety primitives; majority is describes/none
+    d = xside.decide_test_a4([NONE, SH_RICH, NONE], NONE, C)
+    assert d["status"] == "hp_fire_stands_a4"
+    assert d["final_primitives"] == {"stance": "encourages", "objects": ["self_harm"], "qualifiers": []}
+    assert d["final_classes"] == ["self_harm"] and d["disputed_classes"] == [] and d["standing_not_composed"] == []
+
+
+def test_a4_cse_overlay_keeps_majority_non_safety():
+    d = xside.decide_test_a4([VP, VP, CSE_P], None, C)  # qwen3 HP on CSE
+    fp = d["final_primitives"]
+    assert fp["stance"] == "conveys_method" and fp["objects"] == ["sexual_activity", "violence_person"]
+    assert fp["qualifiers"] == ["exceeds_common_knowledge", "subject_is_minor"]
+    assert "child_sexual_exploitation" in d["final_classes"] and "criminal_assistance" in d["final_classes"]
+
+
+def test_a4_mention_gate_dropped_only_when_source_lacks_it():
+    M = {"stance": "describes", "objects": [], "qualifiers": ["is_mention_not_use"]}
+    d = xside.decide_test_a4([M, M, CSE_P], None, C)
+    assert d["final_classes"] == ["child_sexual_exploitation"] and "is_mention_not_use" not in d["final_primitives"]["qualifiers"]
+
+
+def test_a4_non_hp_rows_identical_to_a3():
+    for L in ([PROF, PROF, NONE], [PROF, NONE, None], [NONE, NONE, SH]):
+        a3 = xside.decide_test_a3(L, NONE, C); a4 = xside.decide_test_a4(L, NONE, C)
+        assert {k: a4[k] for k in a3} == a3 and a4["a4_changes"] == []

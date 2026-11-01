@@ -446,6 +446,129 @@ def mark_disputed_a2(combined_path, out_path) -> dict:
     return dict(n)
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# AMENDMENT-4 (Justin 2026-11-01 18:36 NPT): on rows where a high-precision safety fire stands, the final primitives
+# are the primitive-level MAJORITY plus ONLY the safety primitives the high-precision labeler fired. Classes are
+# derived through composition 2a; no class vote.
+SH_STANCES = ("endorses", "encourages", "conveys_method")  # composition 2a self_harm rule stances
+
+
+def a4_overlay(base: dict, src: dict, cls: str) -> tuple[dict, list[str]]:
+    """Add to `base` only the primitives of `src` that composition 2a reads for safety class `cls`.
+
+    CSE: object sexual_activity + qualifier subject_is_minor (stance-free rule).
+    self_harm: object self_harm; the source stance only when the base stance is not a self_harm stance.
+    Suppression gate (negative rule is_mention_not_use @ describes): if the base would be suppressed and the source
+    is not, drop is_mention_not_use from the base when the source lacks it, else take the source stance.
+    Returns (new primitives, list of changes made)."""
+    p = {"stance": base["stance"], "objects": list(base["objects"]), "qualifiers": list(base["qualifiers"])}
+    ch = []
+    if cls == "child_sexual_exploitation":
+        if "sexual_activity" not in p["objects"]:
+            p["objects"].append("sexual_activity"); ch.append("add_object:sexual_activity")
+        if "subject_is_minor" not in p["qualifiers"]:
+            p["qualifiers"].append("subject_is_minor"); ch.append("add_qualifier:subject_is_minor")
+    elif cls == "self_harm":
+        if "self_harm" not in p["objects"]:
+            p["objects"].append("self_harm"); ch.append("add_object:self_harm")
+        if p["stance"] not in SH_STANCES:
+            assert src["stance"] in SH_STANCES, "source fired self_harm without a self_harm stance"
+            ch.append(f"stance:{p['stance']}->{src['stance']}"); p["stance"] = src["stance"]
+    else:
+        raise ValueError(cls)
+    if "is_mention_not_use" in p["qualifiers"] and p["stance"] == "describes":
+        if "is_mention_not_use" not in src["qualifiers"]:
+            p["qualifiers"].remove("is_mention_not_use"); ch.append("drop_qualifier:is_mention_not_use")
+        else:
+            ch.append(f"stance:{p['stance']}->{src['stance']}"); p["stance"] = src["stance"]
+    p["objects"].sort(); p["qualifiers"].sort()
+    return p, ch
+
+
+def decide_test_a4(labels: list, adj_prims, comp, reasons: dict | None = None, keys=None) -> dict:
+    keys = keys or TEST_TRIO
+    d = decide_test_a3(labels, adj_prims, comp, reasons, keys)
+    if d["status"] != "hp_fire_stands":
+        d["a4_changes"] = []
+        return d
+    valid = [p for p in labels if p is not None]
+    base, ties = prim_majority_a3(valid)
+    trace = list(d["trace"])
+    if ties:  # base itself undecided: stored qwen3 adjudication is the base, else the row waits for adjudication
+        trace += ties
+        if adj_prims is None:
+            d.update(status="needs_adjudication", final_primitives=None, final_classes=None, trace=trace, a4_changes=[])
+            return d
+        base = adj_prims; trace.append("a4_base:adjudication")
+    else:
+        trace.append("a4_base:majority")
+    cls = d["classes_by_labeler"]
+    fp, changes = base, []
+    for c in SAFETY:
+        if c not in d["standing_hp_fires"]:
+            continue
+        i = next(i for i, k in enumerate(keys) if cls[i] is not None and c in cls[i] and hp(k, c))
+        fp, ch = a4_overlay(fp, labels[i], c)
+        changes += [f"{c}<{keys[i]}:{x}" for x in ch]
+        trace.append(f"a4_safety_source:{c}:{keys[i]}")
+    fc = sorted(compose(fp, comp))
+    fired = {c: any(s is not None and c in s for s in cls) for c in SAFETY}
+    d.update(status="hp_fire_stands_a4", final_primitives=fp, final_classes=fc, trace=trace, a4_changes=changes,
+             standing_not_composed=sorted(c for c in d["standing_hp_fires"] if c not in fc),
+             disputed_classes=sorted(c for c in SAFETY if fired[c] and c not in fc))
+    return d
+
+
+def combine_test_a4(items_path, labels_dir, adj_path, out, report, reasons_path=None, a3_path=None, a2_path=None):
+    comp = load_composition(None, COMPOSITION_2A_SHA256)
+    ids = [json.loads(l)["id"] for l in Path(items_path).read_text(encoding="utf-8").splitlines() if l.strip()]
+    labs = {k: load_labels(Path(labels_dir) / f"labels-{k}.jsonl") for k in TEST_TRIO}
+    adj = load_labels(adj_path) if adj_path else {}
+    rsn = {}
+    if reasons_path and Path(reasons_path).exists():
+        for l in Path(reasons_path).read_text().splitlines():
+            if l.strip():
+                r = json.loads(l); rsn.setdefault(r["id"], {})[r["class"]] = r["reason"]
+    rows, st, chg, unl = [], Counter(), Counter(), 0
+    for i in ids:
+        if any(i not in labs[k] for k in TEST_TRIO):
+            unl += 1; continue
+        L = [labs[k][i] for k in TEST_TRIO]
+        d = decide_test_a4(L, adj.get(i), comp, rsn.get(i))
+        rows.append({"id": i, "labels": L, **d})
+        st[d["status"]] += 1
+        for x in d["a4_changes"]:
+            chg[x.split("<", 1)[0] + ":" + x.split(":", 1)[1]] += 1  # "<class>:<change>", labeler dropped
+    inconsistent = sum(1 for r in rows if r["final_primitives"] is not None and sorted(compose(r["final_primitives"], comp)) != r["final_classes"])
+    Path(out).write_text("".join(json.dumps(r) + "\n" for r in rows))
+    fcc = lambda rs: dict(sorted(Counter(c for r in rs for c in (r.get("final_classes") or [])).items()))
+    rep = {"rule": "AMENDMENT-4", "side": "test", "rows_in_items": len(ids), "rows_fully_labeled": len(rows),
+           "rows_missing_a_label": unl, "status": dict(st), "a4_changes": dict(chg),
+           "standing_hp_fires": dict(Counter(c for r in rows for c in r["standing_hp_fires"])),
+           "standing_not_composed": dict(Counter(c for r in rows for c in r["standing_not_composed"])),
+           "disputed_by_class": dict(Counter(c for r in rows for c in r["disputed_classes"])),
+           "final_class_counts": fcc(rows), "inconsistent_rows": inconsistent,
+           "needs_adjudication_ids": [r["id"] for r in rows if r["status"] == "needs_adjudication"],
+           "combined_sha256": sha(out)}
+    hp_ids = {r["id"] for r in rows if r["status"] == "hp_fire_stands_a4"}
+    rep["hp_rows"] = len(hp_ids)
+    rep["hp_rows_final_class_counts_a4"] = fcc([r for r in rows if r["id"] in hp_ids])
+    for tag, path in (("a3", a3_path), ("a2", a2_path)):
+        if path:
+            prev = [json.loads(l) for l in Path(path).read_text().splitlines() if l.strip()]
+            rep[f"input_{tag}_sha256"] = sha(path)
+            rep[f"final_class_counts_{tag}"] = fcc(prev)
+            rep[f"hp_rows_final_class_counts_{tag}"] = fcc([r for r in prev if r["id"] in hp_ids])
+            if tag == "a3":
+                rep["disputed_by_class_a3"] = dict(Counter(c for r in prev for c in (r.get("disputed_classes") or [])))
+                prev_d = {r["id"]: sorted(r.get("disputed_classes") or []) for r in prev}
+                rep["disputed_marking_changed_rows_vs_a3"] = sum(1 for r in rows if prev_d.get(r["id"]) != r["disputed_classes"])
+            allc = sorted(set(rep["final_class_counts"]) | set(rep[f"final_class_counts_{tag}"]))
+            rep[f"delta_vs_{tag}"] = {c: rep["final_class_counts"].get(c, 0) - rep[f"final_class_counts_{tag}"].get(c, 0) for c in allc}
+    Path(report).write_text(json.dumps(rep, indent=1))
+    return rep
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -461,6 +584,9 @@ def main(argv=None):
     t3.add_argument("--adjudication"); t3.add_argument("--reasons")
     r3 = sp.add_parser("combine-train-a3")
     for x in ("--items", "--labels-dir", "--out", "--queue", "--report"): r3.add_argument(x, required=True)
+    t4 = sp.add_parser("combine-test-a4")
+    for x in ("--items", "--labels-dir", "--out", "--report"): t4.add_argument(x, required=True)
+    for x in ("--adjudication", "--reasons", "--a3", "--a2"): t4.add_argument(x)
     md = sp.add_parser("mark-disputed-a2"); md.add_argument("--combined", required=True); md.add_argument("--out", required=True)
     r = sp.add_parser("combine-train")
     for x in ("--items", "--labels-dir", "--out", "--queue", "--report"): r.add_argument(x, required=True)
@@ -471,6 +597,8 @@ def main(argv=None):
         print(json.dumps({k: v for k, v in combine_test(o.items, o.labels_dir, o.adjudication, o.out, o.report).items() if k != "unresolved_ids"}))
     elif o.cmd == "combine-test-a3":
         print(json.dumps({k: v for k, v in combine_test_a3(o.items, o.labels_dir, o.adjudication, o.out, o.report, o.reasons).items() if k != "needs_adjudication_ids"}))
+    elif o.cmd == "combine-test-a4":
+        print(json.dumps({k: v for k, v in combine_test_a4(o.items, o.labels_dir, o.adjudication, o.out, o.report, o.reasons, o.a3, o.a2).items() if k != "needs_adjudication_ids"}))
     elif o.cmd == "combine-train-a3":
         print(json.dumps(combine_train_a3(o.items, o.labels_dir, o.out, o.queue, o.report)))
     elif o.cmd == "mark-disputed-a2":
