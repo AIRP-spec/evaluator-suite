@@ -1,5 +1,7 @@
 # Safety-positive supplement declaration (SIGNED)
 
+> **S2 cancelled (Justin t209u, 2026-11-01).** S1 pilot rates: seed-oss-36b 5/236, phi-4 1/236, granite-4.2-8b 0/236, glm-4.5-air serve_failed. Recorded as a method limit in `ADR-2026-11-01-s1-method-limit.md`. The self_harm elicitation section (§1) ends at S1; the CSE compositional side (§2) is unaffected.
+>
 > **Signed and in force.** Justin signed the amended declaration in t207u (2026-11-01 19:35 NPT): "Supplement declaration signed as amended. Pod one may start after item 1's pod is done." This committed copy with the signature block below is the authorization for S1 and the later gates.
 
 - **Signed date:** 2026-11-01 19:35 NPT (amended with source S-MIN; signature recorded 2026-11-01 after guide-reader pod completed)

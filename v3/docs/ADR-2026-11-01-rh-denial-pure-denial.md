@@ -19,3 +19,6 @@
   revised gold (no pod). The RH re-label pod re-labels flagged rows under guide `e5b7b56c`.
   Training-corpus slot specs that mapped `rh-denial` → `encourages`+`directed_at_user` are
   corrected to match this decision (separate change; no retrain).
+- **Addendum (Justin t209u, 2026-11-01):** RH re-label results accepted. The gold-revision overlay
+  (`labelcmp/results/gold-revised-overlay.jsonl`) is the labeling-comparison gold from here; the
+  original gold stays untouched for provenance.

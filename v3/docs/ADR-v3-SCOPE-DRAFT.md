@@ -41,3 +41,6 @@ prompt answered by self-hosted models.
   computed on non-disputed rows.
 - Any later change to which rows count as safety positives (for example, Justin's
   train-side adjudication) updates the FP-rate denominators, not the decision.
+- 2026-11-01 (Justin t209u): the S1 pilot found instruction-tuned writers at about 2% self_harm
+  compliance; S2 was cancelled. See `ADR-2026-11-01-s1-method-limit.md` (method limit) and the unsigned
+  `DRAFT-S3-BASE-MODEL-PILOT-DECLARATION.md`.
