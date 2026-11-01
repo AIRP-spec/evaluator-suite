@@ -17,7 +17,8 @@
 ## 0. What this is
 A sealed set of about **120 self_harm positives**, written by one **test-side instruct** model
 under **slot specs derived from the labeling guide's sh-01…sh-04 and the offer shape**, not from
-the training recipe. Labeled by the **test-side trio** under the v3 high-precision overlay
+the training recipe. Labeled by the **train-role trio mistral-small-3.2 / gemma-4-31b / qwen3-30b-a3b-2507**
+(the trio that labels test-side text under the cross-side rule; t213u) under the v3 high-precision overlay
 (AMENDMENT-3/4). The real S1/S3 compliant rows that survive the truncation rule are included and
 flagged. Leak-checked against training and v2. Sealed with v3. The error profile must state the
 synthetic provenance. **CSE is unchanged** (no new CSE content; nothing elicited for CSE).
@@ -251,7 +252,32 @@ Near-duplicate threshold is not changed after the first run of this declaration.
   positives without a separately signed re-check.
 - Pinned at signature: guide `e5b7b56c…`, composition `59ddf1f6…`, train corpus sha `13c86ea7…`,
   generator revision `497f1dca…`, licence sha `41fe2167…`. Slot-spec sha, generator-code sha and
-  system-prompt sha: _filled in the pre-pod commit (not yet written)_.
+  system-prompt sha: filled in the pre-pod commit (t213u, below).
+
+### Pre-pod pins (t213u, 2026-11-02 NPT; written before any generation)
+| artefact | path | sha256 |
+|---|---|---|
+| slot spec | `v3/docs/v3-safety-slot-spec.json` | `a3a389941554fe602ea1421df27b2b1cf8fa18dbb4dbae440f3f002c32704394` |
+| fixed system prompt | `v3/docs/v3-safety-system-prompt.txt` | `a18755ddb2106360c9e5205f81a6001c482feeb824e31748f4c1984c18fa6a9d` |
+| generator code | `v3/airp_v3/v3_safety.py` | `2d4348503c74c5366aacdc9d9ff67d417dec24d0972fd646adb492e6a9f7e338` |
+| tests (synthetic benign data only) | `v3/tests/test_v3_safety.py` | `ae1408b6649af3f2971b25654329f5f69704549bcb1ae1fbb0471f2abc8e0df6` |
+
+- Job list: 5 families × 3 registers × 3 lengths = 45 cells × 6 = 270 jobs; job-list sha
+  `e71fcf04ebc50f25ef5e7866325047669d43be04eb04ed5ca9a5b7ad5678da88` (`python3 -m airp_v3.v3_safety jobs`).
+- The code refuses a slot spec or system prompt whose sha differs from these pins. It imports no
+  training-recipe artefact (test `test_no_training_recipe_import`).
+- Mechanical readings, written before the run (no rule changed): positives need ≥ 2 valid trio
+  labels, A4 final composes `self_harm`, `self_harm` not disputed, status not `needs_adjudication`;
+  qwen3 adjudicates exactly the rows `decide_test_a4` marks `needs_adjudication`; empty generator
+  outputs are counted, not labeled. The 9 real rows are trio-labeled with the generated rows; if any
+  of them is not a trio `self_harm` positive, the seal step stops and reports (§3 says included,
+  §4 says positives only; that conflict is not resolved here).
+
+### Signature record (t213u rulings, 2026-11-02 01:57 NPT)
+- "v3-safety: the crossing permission covers its pod." Cumulative GPU may cross $30 for this pod
+  (ceiling $60; stop and report at $45).
+- "Labelers are the mistral, gemma, qwen3 trio under the cross-side rule." (§0 wording corrected.)
+- "Pin the slot spec, generator code and system prompt, then run." Pins above.
 
 ### Signature record (t212u rulings)
 1. **Real positives:** 15 compliant, 9 included and flagged, 6 truncated excluded with reason
