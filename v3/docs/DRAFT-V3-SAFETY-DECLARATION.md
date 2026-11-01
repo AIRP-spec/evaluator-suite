@@ -1,11 +1,18 @@
-# DRAFT (UNSIGNED): v3-safety — sealed self_harm positives for recall evidence
+# v3-safety declaration: sealed self_harm positives for recall evidence (SIGNED)
 
-> **UNSIGNED. NOT IN FORCE. No pod, no generation, no spend until Justin signs.**
-> Status: draft for signature (Justin t211u, 2026-11-02 01:10 NPT). File name keeps the DRAFT-
-> prefix until signature; after signature the same path is the authorization (S3 convention).
+> **Signed and in force.** Justin signed in t212u (2026-11-02 01:47 NPT): "v3-safety licence
+> verdict: CLEAR. Record the evaluation-only, no-deployment scope and the second reading of the
+> prohibited-uses list. Signed." The signature record is at the end of this file. The file keeps its
+> DRAFT- name so earlier links and commit references stay valid (same convention as the signed S3
+> and supplement declarations).
+> Drafted in response to Justin t211u (2026-11-02 01:10 NPT).
 > Standing position that makes this necessary: `ADR-2026-11-02-s3-result-standing.md`
 > (collected outputs cannot supply self_harm positives). Scope ADR: `ADR-v3-SCOPE-DRAFT.md`
 > decision 2 (v3 as collected does not gate safety recall).
+> **Before any pod:** the slot-spec file `v3/docs/v3-safety-slot-spec.json`, the generator code
+> `v3/airp_v3/v3_safety.py` (tested) and the fixed system-prompt sha are committed and their shas
+> filled into "Pinned at signature" below; the §8 headroom check passes. Nothing is generated before
+> that commit is on the remote branch.
 
 ## 0. What this is
 A sealed set of about **120 self_harm positives**, written by one **test-side instruct** model
@@ -107,7 +114,7 @@ Inventory of labeler-compliant outputs from S1 and the S3 pilot (composition 2a 
 | S1 seed-oss-36b | 5 | ids below |
 | S1 phi-4 | 1 | id below |
 | S3 pilot | 9 | of which 6 carry `truncated_at_user_marker` |
-| **total** | **15** | Justin said "about 14"; inventory is 15 — flag at signature |
+| **total** | **15** | confirmed by Justin at signature (t212u): 15 compliant, 9 included |
 
 **Included (flagged `real_elicited`, provenance preserved):** the 6 S1 rows + the 3 S3 rows that do
 **not** carry `truncated_at_user_marker` = **9**.
@@ -234,15 +241,32 @@ Near-duplicate threshold is not changed after the first run of this declaration.
 - OpenAI. Workflow-file changes. tryairp.com / dev.tryairp.com. Merging to main.
 
 ## Signature
-- [ ] Signed: ___________________________ (Justin Flores)
-- Date / time (NPT): ___________________________
+- [x] Signed: Justin Flores (owner message t212u: "v3-safety licence verdict: CLEAR. … Signed.")
+- Date / time (NPT): 2026-11-02 01:47 NPT
 - Licence verdict for `ByteDance-Seed/Seed-OSS-36B-Instruct` @ `497f1dca…` as the v3-safety
-  generator: [ ] CLEAR as proposed in §1 (Apache-2.0; prohibited-uses list read; evaluation-only
-  generation of self_harm-positive text under slot specs, CSE-filtered, outside the list) /
-  [ ] other (write): ___________________________
-- Real-row inventory: include the 9 listed in §3 (6 S1 + 3 S3 untruncated); 6 truncated S3 rows
-  stay out unless a later re-check is signed. Confirm the "14 vs 15" count: [ ] accept 15/9 /
-  [ ] other: ___________________________
-- Pinned at signature (filled in the signature commit): slot-spec sha, guide
-  `e5b7b56c…`, composition `59ddf1f6…`, train corpus sha `13c86ea7…`, generator revision
-  `497f1dca…`, licence sha `41fe2167…`.
+  generator: [x] **CLEAR** (Apache-2.0; `LICENSE.txt` sha `41fe2167…`).
+- Real-row inventory: [x] accept 15/9. **15 compliant** (6 S1 + 9 S3 pilot); **9 included and
+  flagged** `real_elicited` (6 S1 + 3 S3 untruncated, ids in §3); **6 truncated excluded**, reason:
+  they carry `truncated_at_user_marker` and, under ADR 2026-11-02, are not reusable as labeled
+  positives without a separately signed re-check.
+- Pinned at signature: guide `e5b7b56c…`, composition `59ddf1f6…`, train corpus sha `13c86ea7…`,
+  generator revision `497f1dca…`, licence sha `41fe2167…`. Slot-spec sha, generator-code sha and
+  system-prompt sha: _filled in the pre-pod commit (not yet written)_.
+
+### Signature record (t212u rulings)
+1. **Real positives:** 15 compliant, 9 included and flagged, 6 truncated excluded with reason
+   (above). Confirmed.
+2. **Licence verdict CLEAR**, recorded with:
+   - **Scope: evaluation-only, no deployment.** Outputs are generated only to build the sealed
+     v3-safety recall set. The generator is not deployed, served to users, or used for any product
+     path. Outputs stay box/VPS-only until sealed, the sealed file is not published as content, and
+     it is scored only under rules declared before the score.
+   - **Second reading of the prohibited-uses list.** `MODEL_CARD.md` sha `b87d901f…` was read for
+     the S3 base pilot (first reading, t210u) and read again for this generator on 2026-11-02 ~01:15
+     NPT (second reading). The list covers professional advice, high-risk automatic decisions,
+     minor safety / CSAM, illegal activities, hate & harassment, misinformation, military &
+     surveillance, sexually explicit material / PII. Evaluation-only, CSE-filtered generation of
+     self_harm-positive text under slot specs is outside it. The card states it does not restrict
+     or modify the Apache-2.0 licence.
+3. **CSE** unchanged (§5): no minor subjects or sexual content requested; CSE-labeled rows deleted
+   unviewed, ids and trigger category logged (declared exception to archive-before-terminate).
