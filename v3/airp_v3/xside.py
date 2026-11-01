@@ -279,6 +279,173 @@ def combine_train(items_path, labels_dir, out, queue, report):
     return rep
 
 
+# ---------------- AMENDMENT-3 (Justin, 2026-11-01 17:53 NPT) ----------------
+# Gold precision per (labeler, safety class), measured on gold P=853 (PER-CLASS-labcmp-1/2.tsv).
+GOLD_PRECISION = {
+    ("mistral-small-3.2", "child_sexual_exploitation"): 1.0, ("mistral-small-3.2", "self_harm"): 1.0,
+    ("gemma-4-31b", "child_sexual_exploitation"): 1.0, ("gemma-4-31b", "self_harm"): 1.0,
+    ("qwen3-30b-a3b-2507", "child_sexual_exploitation"): 0.9677, ("qwen3-30b-a3b-2507", "self_harm"): 0.7273,
+    ("nemotron-3-super", "child_sexual_exploitation"): 0.9841, ("nemotron-3-super", "self_harm"): 0.8889,
+    ("seed-oss-36b", "child_sexual_exploitation"): 1.0, ("seed-oss-36b", "self_harm"): 0.2051,
+}
+HP_FLOOR = 0.95
+OVERTURN_REASONS = {"mention", "refusal"}
+
+
+def hp(labeler: str, cls: str) -> bool:
+    return GOLD_PRECISION.get((labeler, cls), 0.0) >= HP_FLOOR
+
+
+def prim_majority_a3(valid: list[dict]) -> tuple[dict | None, list[str]]:
+    """Primitive-level majority; returns (prims, ties). Any tie -> adjudication (no class vote exists)."""
+    ties = []
+    if len(valid) < 2:
+        return None, ["fewer_than_2_valid"]
+    n = len(valid)
+    sc = Counter(p["stance"] for p in valid).most_common()
+    if len(sc) > 1 and sc[0][1] == sc[1][1]:
+        ties.append("tie:stance")
+    out = {"stance": sc[0][0], "objects": [], "qualifiers": []}
+    for f in ("objects", "qualifiers"):
+        for x in sorted({x for p in valid for x in p[f]}):
+            k = sum(x in p[f] for p in valid)
+            if k * 2 == n:
+                ties.append(f"tie:{x}")
+            elif k * 2 > n:
+                out[f].append(x)
+    return out, ties
+
+
+def decide_test_a3(labels: list, adj_prims, comp, reasons: dict | None = None, keys=None) -> dict:
+    """AMENDMENT-3 test-side rule. labels in TEST_TRIO rank order; adj_prims = stored qwen3 adjudication or None;
+    reasons = {class: 'mention'|'refusal'} recorded by guide-based adjudication for this row (none recorded yet)."""
+    keys = keys or TEST_TRIO
+    reasons = reasons or {}
+    cls = [classes_of(p, comp) for p in labels]
+    fired = {c: [k for k, s in zip(keys, cls) if s is not None and c in s] for c in SAFETY}
+    standing = {c for c in SAFETY if any(hp(k, c) for k in fired[c]) and reasons.get(c) not in OVERTURN_REASONS}
+    trace = []
+    if standing:
+        # final primitives = highest-ranked high-precision labeler that fired a standing class
+        src = next(i for i, k in enumerate(keys) if cls[i] is not None and any(c in cls[i] and hp(k, c) for c in standing))
+        fp, status = labels[src], "hp_fire_stands"
+        trace.append(f"hp_source:{keys[src]}")
+    else:
+        valid = [p for p in labels if p is not None]
+        mp, ties = prim_majority_a3(valid)
+        lp = [f"lp_fire:{c}" for c in SAFETY if fired[c]]
+        need = ties + lp
+        trace += need
+        if not need:
+            fp, status = mp, "primitive_majority"
+        elif adj_prims is not None:
+            fp, status = adj_prims, "adjudicated"
+        else:
+            fp, status = None, "needs_adjudication"
+    fc = None if fp is None else sorted(compose(fp, comp))
+    missing_standing = sorted(c for c in standing if fc is not None and c not in fc)
+    disputed = sorted(c for c in SAFETY if fired[c] and fc is not None and c not in fc)
+    return {"status": status, "final_primitives": fp, "final_classes": fc, "disputed_classes": disputed,
+            "standing_hp_fires": sorted(standing), "standing_not_composed": missing_standing, "trace": trace,
+            "classes_by_labeler": [None if s is None else sorted(s) for s in cls]}
+
+
+def combine_test_a3(items_path, labels_dir, adj_path, out, report, reasons_path=None):
+    comp = load_composition(None, COMPOSITION_2A_SHA256)
+    ids = [json.loads(l)["id"] for l in Path(items_path).read_text(encoding="utf-8").splitlines() if l.strip()]
+    labs = {k: load_labels(Path(labels_dir) / f"labels-{k}.jsonl") for k in TEST_TRIO}
+    adj = load_labels(adj_path) if adj_path else {}
+    rsn = {}
+    if reasons_path and Path(reasons_path).exists():
+        for l in Path(reasons_path).read_text().splitlines():
+            if l.strip():
+                r = json.loads(l); rsn.setdefault(r["id"], {})[r["class"]] = r["reason"]
+    rows, st, tr, unl = [], Counter(), Counter(), 0
+    for i in ids:
+        if any(i not in labs[k] for k in TEST_TRIO):
+            unl += 1; continue
+        L = [labs[k][i] for k in TEST_TRIO]
+        d = decide_test_a3(L, adj.get(i), comp, rsn.get(i))
+        rows.append({"id": i, "labels": L, **d})
+        st[d["status"]] += 1
+        for t in d["trace"]:
+            tr[t.split(":")[0] + ":" + t.split(":")[1] if ":" in t else t] += 1
+    Path(out).write_text("".join(json.dumps(r) + "\n" for r in rows))
+    rep = {"rule": "AMENDMENT-3", "side": "test", "rows_in_items": len(ids), "rows_fully_labeled": len(rows),
+           "rows_missing_a_label": unl, "status": dict(st), "trace_counts": dict(tr),
+           "standing_hp_fires": dict(Counter(c for r in rows for c in r["standing_hp_fires"])),
+           "standing_not_composed": dict(Counter(c for r in rows for c in r["standing_not_composed"])),
+           "disputed_by_class": dict(Counter(c for r in rows for c in r["disputed_classes"])),
+           "final_class_counts": dict(Counter(c for r in rows for c in (r["final_classes"] or []))),
+           "inconsistent_rows": 0, "needs_adjudication_ids": [r["id"] for r in rows if r["status"] == "needs_adjudication"],
+           "combined_sha256": sha(out)}
+    Path(report).write_text(json.dumps(rep, indent=1))
+    return rep
+
+
+def train_queue_a3(P, S, comp):
+    """AMENDMENT-3 train-side triggers for one row (primary, second primitives)."""
+    k1, k2 = TRAIN_PAIR
+    cp, cs = classes_of(P, comp), classes_of(S, comp)
+    why = []
+    if P is None: why.append("primary_invalid")
+    if S is None: why.append("second_invalid")
+    if cp is not None and cs is not None and cp != cs: why.append("class_disagreement")
+    for c in SAFETY:
+        who = [k for k, s in ((k1, cp), (k2, cs)) if s is not None and c in s]
+        if any(hp(k, c) for k in who): why.append(f"hp_fire_stands_unless_mention_or_refusal:{c}")
+        elif who: why.append(f"lp_fire:{c}")
+    return why, cp, cs
+
+
+def combine_train_a3(items_path, labels_dir, out, queue, report):
+    comp = load_composition(None, COMPOSITION_2A_SHA256)
+    ids = [json.loads(l)["id"] for l in Path(items_path).read_text(encoding="utf-8").splitlines() if l.strip()]
+    labs = {k: load_labels(Path(labels_dir) / f"labels-{k}.jsonl") for k in TRAIN_PAIR}
+    final, q, trig, shapes, unl = [], [], Counter(), Counter(), 0
+    for i in ids:
+        if any(i not in labs[k] for k in TRAIN_PAIR):
+            unl += 1; continue
+        P, S = labs[TRAIN_PAIR[0]][i], labs[TRAIN_PAIR[1]][i]
+        why, cp, cs = train_queue_a3(P, S, comp)
+        cl = [None if cp is None else sorted(cp), None if cs is None else sorted(cs)]
+        if cl[0] != cl[1]:
+            shapes[shape(TRAIN_PAIR, cl)] += 1
+        for w in why: trig[w] += 1
+        if why:
+            q.append({"id": i, "reasons": why, "primary": P, "second": S, "classes_primary": cl[0], "classes_second": cl[1],
+                      "cse_fire": any("child_sexual_exploitation" in (c or []) for c in cl), "status": "pending_justin",
+                      "adjudication": None, "reason_line": None})
+        else:
+            final.append({"id": i, "status": "agreed", "final_primitives": P, "final_classes": cl[0]})
+    Path(out).write_text("".join(json.dumps(r) + "\n" for r in final))
+    Path(queue).write_text("".join(json.dumps(r) + "\n" for r in q))
+    rep = {"rule": "AMENDMENT-3", "side": "train", "primary": TRAIN_PAIR[0], "second": TRAIN_PAIR[1],
+           "rows_in_items": len(ids), "rows_fully_labeled": len(final) + len(q), "rows_missing_a_label": unl,
+           "agreed_rows": len(final), "queued_rows": len(q), "queue_triggers": dict(trig),
+           "queued_with_cse_fire": sum(r["cse_fire"] for r in q),
+           "top5_disagreement_shapes": shapes.most_common(5), "final_sha256": sha(out), "queue_sha256": sha(queue)}
+    Path(report).write_text(json.dumps(rep, indent=1))
+    return rep
+
+
+def mark_disputed_a2(combined_path, out_path) -> dict:
+    """B1: on AMENDMENT-2 outputs, mark a safety class `disputed` where a labeler fired it and adjudication overturned it."""
+    n = Counter(); rows = []
+    for l in Path(combined_path).read_text().splitlines():
+        r = json.loads(l)
+        dis = []
+        if r.get("status") == "adjudicated":
+            for c in SAFETY:
+                if f"any_fire:{c}" in r["adjudicate"] and c not in (r["final_classes"] or []):
+                    dis.append(c)
+        r["disputed_classes"] = dis
+        for c in dis: n[c] += 1
+        rows.append(r)
+    Path(out_path).write_text("".join(json.dumps(r) + "\n" for r in rows))
+    return dict(n)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
@@ -289,6 +456,12 @@ def main(argv=None):
     t = sp.add_parser("combine-test")
     for x in ("--items", "--labels-dir", "--out", "--report"): t.add_argument(x, required=True)
     t.add_argument("--adjudication")
+    t3 = sp.add_parser("combine-test-a3")
+    for x in ("--items", "--labels-dir", "--out", "--report"): t3.add_argument(x, required=True)
+    t3.add_argument("--adjudication"); t3.add_argument("--reasons")
+    r3 = sp.add_parser("combine-train-a3")
+    for x in ("--items", "--labels-dir", "--out", "--queue", "--report"): r3.add_argument(x, required=True)
+    md = sp.add_parser("mark-disputed-a2"); md.add_argument("--combined", required=True); md.add_argument("--out", required=True)
     r = sp.add_parser("combine-train")
     for x in ("--items", "--labels-dir", "--out", "--queue", "--report"): r.add_argument(x, required=True)
     o = ap.parse_args(argv)
@@ -296,6 +469,12 @@ def main(argv=None):
         print(json.dumps(build_items(o.side, o.out)))
     elif o.cmd == "combine-test":
         print(json.dumps({k: v for k, v in combine_test(o.items, o.labels_dir, o.adjudication, o.out, o.report).items() if k != "unresolved_ids"}))
+    elif o.cmd == "combine-test-a3":
+        print(json.dumps({k: v for k, v in combine_test_a3(o.items, o.labels_dir, o.adjudication, o.out, o.report, o.reasons).items() if k != "needs_adjudication_ids"}))
+    elif o.cmd == "combine-train-a3":
+        print(json.dumps(combine_train_a3(o.items, o.labels_dir, o.out, o.queue, o.report)))
+    elif o.cmd == "mark-disputed-a2":
+        print(json.dumps(mark_disputed_a2(o.combined, o.out)))
     elif o.cmd == "combine-train":
         print(json.dumps(combine_train(o.items, o.labels_dir, o.out, o.queue, o.report)))
     elif o.cmd == "adjudicate":

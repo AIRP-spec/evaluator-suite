@@ -52,3 +52,42 @@ def test_train_queue(tmp_path):
 def test_adj_messages_has_no_extra_text():
     m = xside.adj_messages("G", "CONTENT", [NONE, None, PROF])
     assert "Labeler B: (invalid output)" in m[1]["content"] and m[1]["content"].count("CONTENT") == 1
+
+
+CSE_P = {"stance": "describes", "objects": ["sexual_activity"], "qualifiers": ["subject_is_minor"]}
+
+
+def test_a3_hp_fire_stands_over_adjudication():
+    d = xside.decide_test_a3([NONE, SH, NONE], NONE, C)  # gemma (HP on self_harm) fires; qwen3 adjudication said no
+    assert d["status"] == "hp_fire_stands" and "self_harm" in d["final_classes"] and d["disputed_classes"] == []
+
+
+def test_a3_recorded_mention_reason_overturns():
+    d = xside.decide_test_a3([NONE, SH, NONE], NONE, C, {"self_harm": "mention"})
+    assert d["status"] == "adjudicated" and d["disputed_classes"] == ["self_harm"]
+
+
+def test_a3_low_precision_fire_goes_to_adjudication():
+    d = xside.decide_test_a3([NONE, NONE, SH], None, C)  # qwen3 self_harm precision < 0.95
+    assert d["status"] == "needs_adjudication"
+    d = xside.decide_test_a3([NONE, NONE, SH], NONE, C)
+    assert d["status"] == "adjudicated" and d["disputed_classes"] == ["self_harm"]
+
+
+def test_a3_qwen3_cse_fire_is_high_precision():
+    d = xside.decide_test_a3([NONE, NONE, CSE_P], NONE, C)
+    assert d["status"] == "hp_fire_stands" and d["final_classes"] == ["child_sexual_exploitation"]
+
+
+def test_a3_classes_always_composed_from_primitives():
+    d = xside.decide_test_a3([PROF, PROF, NONE], None, C)
+    assert d["status"] == "primitive_majority" and d["final_classes"] == ["profanity"]
+    d = xside.decide_test_a3([PROF, NONE, None], None, C)
+    assert "tie:profanity" in d["trace"] and d["status"] == "needs_adjudication"
+
+
+def test_a3_train_triggers():
+    w, _, _ = xside.train_queue_a3(CSE_P, NONE, C)
+    assert "hp_fire_stands_unless_mention_or_refusal:child_sexual_exploitation" in w
+    w, _, _ = xside.train_queue_a3(SH, SH, C)
+    assert w == ["lp_fire:self_harm"]

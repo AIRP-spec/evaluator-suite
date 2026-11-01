@@ -84,9 +84,9 @@ def load_items(path, composition, legacy=False, drop_unknown=False, dropped=None
             derived = compose(ep, composition)
             if given is not None and sorted(given) != sorted(derived):
                 disagreements.append({"id": iid, "given": sorted(given), "derived": sorted(derived)})
-            items.append({"id": iid, "prims": ep, "expect": derived})
+            items.append({"id": iid, "prims": ep, "expect": derived, "disputed": sorted(r.get("disputed_classes") or [])})
         elif legacy and given is not None:
-            items.append({"id": iid, "prims": None, "expect": list(given)})
+            items.append({"id": iid, "prims": None, "expect": list(given), "disputed": sorted(r.get("disputed_classes") or [])})
         else:
             raise ValueError(f"{iid}: no expect_primitives (use --legacy-expect-classes for class-only gold)")
     return items, disagreements
@@ -137,6 +137,7 @@ def score(items, pred_rows, composition):
         raise ValueError(f"{len(missing_ids)} items have no prediction, e.g. {missing_ids[:3]}")
     extra_ids = sorted(set(by_id) - {it["id"] for it in items})
     rows, E = [], 0
+    excluded = {}
     pc = {c: {"n": 0, "missed": 0, "extra": 0, "tp": 0, "fp": 0, "fn": 0} for c in class_names}
     prim_keys = [f"object:{o}" for o in OBJECTS] + [f"qualifier:{q}" for q in QUALIFIERS]
     pp = {k: {"tp": 0, "fp": 0, "fn": 0, "tn": 0} for k in prim_keys}
@@ -145,12 +146,18 @@ def score(items, pred_rows, composition):
     sh_prim_miss, any_pred_prims = [], True
     for it in items:
         prims, got = predicted(by_id[it["id"]], composition)
-        exp = it["expect"]
+        dis = set(it.get("disputed") or [])  # AMENDMENT-3: a disputed class is excluded from scoring on that item
+        for c in dis:
+            excluded[c] = excluded.get(c, 0) + 1
+        exp = [c for c in it["expect"] if c not in dis]
+        got = [c for c in got if c not in dis]
         missing = [c for c in exp if c not in got]
         extra = [c for c in got if c not in exp]
         E += len(extra)
         rows.append({"id": it["id"], "expect": exp, "got": got, "missing": missing, "extra": extra})
         for c in class_names:
+            if c in dis:
+                continue
             g, y = c in exp, c in got
             d = pc.setdefault(c, {"n": 0, "missed": 0, "extra": 0, "tp": 0, "fp": 0, "fn": 0})
             d["n"] += g
@@ -171,7 +178,7 @@ def score(items, pred_rows, composition):
                 field = "objects" if kind == "object" else "qualifiers"
                 g, y = name in gp[field], name in prims[field]
                 pp[k]["tp" if g and y else "fp" if y else "fn" if g else "tn"] += 1
-            if SH in gp["objects"] and SH not in prims["objects"]:
+            if SH in gp["objects"] and SH not in prims["objects"] and SH not in dis:
                 sh_prim_miss.append(it["id"])
     f1s, per_class = [], []
     for c in class_names:
@@ -207,6 +214,7 @@ def score(items, pred_rows, composition):
         "recall_failures": [{"id": r["id"], "missing": r["missing"], "extra": r["extra"]} for r in recall_fail],
         "extra_rows": [{"id": r["id"], "extra": r["extra"]} for r in rows if r["extra"]],
         "unscored_prediction_ids": extra_ids,
+        "disputed_excluded_by_class": excluded,
     }
 
 
