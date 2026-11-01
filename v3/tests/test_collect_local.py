@@ -240,6 +240,75 @@ class RunLocalTests(unittest.TestCase):
             collect.call_local("https://openrouter.ai/api", "m", "p", 10, 0.7, {})
 
 
+class StripReasoningTests(unittest.TestCase):
+    def test_no_markers_unchanged(self):
+        self.assertEqual(collect.strip_reasoning("plain answer"), ("plain answer", []))
+
+    def test_unmatched_close_drops_prefix(self):
+        clean, m = collect.strip_reasoning("reasoning here</think>\n\nThe answer.")
+        self.assertEqual(clean, "The answer.")
+        self.assertEqual(m, ["</think>"])
+
+    def test_seed_close(self):
+        clean, m = collect.strip_reasoning("plan</seed:think>Answer")
+        self.assertEqual((clean, m), ("Answer", ["</seed:think>"]))
+
+    def test_full_block_removed(self):
+        clean, _ = collect.strip_reasoning("A <think>x\ny</think> B")
+        self.assertEqual(clean, "A  B")
+
+    def test_unmatched_open_cut_off(self):
+        clean, _ = collect.strip_reasoning("Answer.<think>still thinking")
+        self.assertEqual(clean, "Answer.")
+
+    def test_row_flags_and_keeps_original(self):
+        model = dict(models()["granite-4.2-8b"], served_model="m")
+        ctx = {"chat_template_kwargs": {}, "temperature": 0.7, "max_tokens": 1500, "license_sha256": "L",
+               "verdict": "CLEAR", "policy_sha256": "P", "prompts_sha256": "S"}
+        raw = {"id": "r", "choices": [{"message": {"content": "r</think>Ans"}, "finish_reason": "length"}], "usage": {}}
+        row = collect.local_row({"id": "xstest:1", "prompt_set": "xstest"}, model, "h", raw, "t", ctx)
+        pv = row["provenance"]
+        self.assertEqual(row["content"], "Ans")
+        self.assertTrue(pv["reasoning_markers_stripped"])
+        self.assertEqual(pv["original_content"], "r</think>Ans")
+        self.assertTrue(pv["truncated"])
+        self.assertEqual(pv["max_tokens_cap"], 1500)
+        self.assertFalse(pv["empty_after_strip"])
+
+    def test_clean_row_not_flagged(self):
+        model = dict(models()["granite-4.2-8b"], served_model="m")
+        ctx = {"chat_template_kwargs": {}, "temperature": 0.7, "max_tokens": 1500, "license_sha256": "L",
+               "verdict": "CLEAR", "policy_sha256": "P", "prompts_sha256": "S"}
+        raw = {"id": "r", "choices": [{"message": {"content": "Ans"}, "finish_reason": "stop"}], "usage": {}}
+        pv = collect.local_row({"id": "xstest:1"}, model, "h", raw, "t", ctx)["provenance"]
+        self.assertFalse(pv["reasoning_markers_stripped"])
+        self.assertIsNone(pv["original_content"])
+        self.assertFalse(pv["truncated"])
+
+
+class CapBySideTests(unittest.TestCase):
+    def _main(self, role, key, mt, prompt_side):
+        d = Path(tempfile.mkdtemp())
+        pset = "xstest" if prompt_side == "test" else "aegis2-train"
+        try:
+            p, r = write_prompts(d, [{"id": f"{pset}:1", "prompt_set": pset, "side": prompt_side, "prompt": "hi",
+                                      "assigned_model": key}])
+            return collect.main(["--backend", "local", "--base-url", "http://127.0.0.1:1", "--models", str(MODELS),
+                                 "--model-key", key, "--role", role, "--policy-file", str(POLICY),
+                                 "--prompts", str(p), "--filter-report", str(r), "--host", "h",
+                                 "--out", str(d / "o.jsonl"), "--max-tokens", str(mt), "--max-wall-seconds", "0.01"]), d
+        finally:
+            shutil.rmtree(d)
+
+    def test_caps(self):
+        self.assertEqual(collect.MAX_TOKENS_CAP, {"train": 800, "test": 1500})
+        self.assertEqual(self._main("test", "phi-4", 1501, "test")[0], 2)
+        self.assertEqual(self._main("train", "qwen3-30b-a3b-2507", 801, "train")[0], 2)
+        # at the cap the gate passes (the run then stops on the wall clock, rc 3, or 0 if nothing to do)
+        self.assertIn(self._main("test", "phi-4", 1500, "test")[0], (0, 3))
+        self.assertIn(self._main("train", "qwen3-30b-a3b-2507", 800, "train")[0], (0, 3))
+
+
 class MainLocalTests(unittest.TestCase):
     def test_local_backend_does_not_need_openrouter_approval_but_needs_policy(self):
         d = Path(tempfile.mkdtemp())

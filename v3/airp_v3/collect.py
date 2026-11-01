@@ -30,6 +30,7 @@ provider_terms_ref.
 from __future__ import annotations
 
 import argparse
+import re
 import json
 import os
 import sys
@@ -210,6 +211,36 @@ def main_openrouter(argv=None) -> int:
 # ---------------------------------------------------------------------------
 
 THINK_MARKERS = ("<think>", "</think>", "<|channel>thought", "<seed:think>", "</seed:think>")
+_THINK_PAIRS = (("<think>", "</think>"), ("<seed:think>", "</seed:think>"))
+
+# Output cap per side (PLAN-AMENDMENT-2026-11-01b): training stays at 800; the test
+# side is re-collected at 1500. A request above the cap for its side is refused.
+MAX_TOKENS_CAP = {"train": 800, "test": 1500}
+
+
+def strip_reasoning(content: str) -> tuple[str, list[str]]:
+    """Remove reasoning spans that leaked into the answer (PLAN-AMENDMENT-2026-11-01b).
+
+    - <open>...</close> blocks are removed.
+    - An unmatched closing marker means the template opened the block, so the text
+      before the last closing marker is reasoning and is removed.
+    - An unmatched opening marker (cut off while reasoning) removes from it to the end.
+    - Any other marker literal (e.g. "<|channel>thought") is removed on its own.
+    Returns (clean_content, markers_found). The caller keeps the original verbatim.
+    """
+    markers = [m for m in THINK_MARKERS if m in content]
+    if not markers:
+        return content, []
+    s = content
+    for op, cl in _THINK_PAIRS:
+        s = re.sub(re.escape(op) + r".*?" + re.escape(cl), "", s, flags=re.S)
+        if cl in s:
+            s = s.rsplit(cl, 1)[1]
+        if op in s:
+            s = s.split(op, 1)[0]
+    for m in THINK_MARKERS:
+        s = s.replace(m, "")
+    return s.strip(), markers
 
 
 def _text_of(row: dict) -> str:
@@ -251,7 +282,9 @@ def local_row(prompt_row: dict, model: dict, host: str, raw: dict, ts: str, ctx:
     reasoning_tokens = details.get("reasoning_tokens")
     if reasoning_tokens is None:
         reasoning_tokens = 0 if not reasoning else None
-    markers = [m for m in THINK_MARKERS if m in content]
+    original = content
+    content, markers = strip_reasoning(content)
+    finish = choice.get("finish_reason")
     pid = str(prompt_row.get("id"))
     return {
         "id": f"{pid}::{model['key']}",
@@ -277,7 +310,12 @@ def local_row(prompt_row: dict, model: dict, host: str, raw: dict, ts: str, ctx:
             },
             "thinking_forced_off": ctx["chat_template_kwargs"],
             "thinking_markers_in_content": markers,
-            "finish_reason": choice.get("finish_reason"),
+            "reasoning_markers_stripped": bool(markers),
+            "original_content": original if markers else None,
+            "empty_after_strip": bool(markers) and not content,
+            "finish_reason": finish,
+            "truncated": finish == "length",
+            "max_tokens_cap": ctx["max_tokens"],
             "sampling": {"temperature": ctx["temperature"], "max_tokens": ctx["max_tokens"],
                          "system_prompt": None, "template": "model chat template, single user turn"},
             "provider_terms_ref": model["terms_ref"],
@@ -411,8 +449,9 @@ def main_local(argv=None) -> int:
     ap.add_argument("--summary", default=None, help="write run summary JSON here")
     a = ap.parse_args(argv)
     try:
-        if a.max_tokens > 800:
-            raise CollectBlocked("max tokens is capped at 800 by the v3 plan")
+        if a.max_tokens > MAX_TOKENS_CAP[a.role]:
+            raise CollectBlocked(f"max tokens is capped at {MAX_TOKENS_CAP[a.role]} for the {a.role} side "
+                                 "(PLAN-AMENDMENT-2026-11-01b)")
         doc = json.loads(Path(a.models).read_text(encoding="utf-8"))
         models = {m["key"]: m for m in doc["models"]}
         if a.model_key not in models:

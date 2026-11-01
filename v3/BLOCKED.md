@@ -6,6 +6,10 @@
 test and 5723/5723 train prompts, 0 errors; cumulative spend $11.37 of the $30 stop.
 See `collect/reports/collection-selfhost-20261101.json`. No pod running.
 
+**2026-11-01b:** test side is being re-collected at a 1,500-token cap
+(`docs/PLAN-AMENDMENT-2026-11-01b.md`); 800-cap outputs kept and archived.
+Duplicate/overlap drops confirmed by Justin.
+
 **For Justin to review (not blocking collection):**
 - The prompt sets also dropped whole rows for exact duplicates (test 3, train 8)
   and test-vs-train leaks (test 7), in addition to filter_cse (test 181, train 269).

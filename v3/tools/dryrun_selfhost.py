@@ -100,7 +100,7 @@ def main() -> int:
         ("training prompt set on test model", ["--model-key", "tiny-smollm2", "--role", "test", "--prompts", str(tp), "--filter-report", str(tr)]),
         ("prompts sha != filter report", ["--model-key", "tiny-smollm2", "--role", "test", "--prompts", str(prompts), "--filter-report", str(bad_report)]),
         ("OpenAI model", ["--model-key", "tiny-openai", "--role", "test", "--prompts", str(prompts), "--filter-report", str(report)]),
-        ("max tokens over 800", ["--model-key", "tiny-smollm2", "--role", "test", "--prompts", str(prompts), "--filter-report", str(report), "--max-tokens", "900"]),
+        ("max tokens over the test cap (1500)", ["--model-key", "tiny-smollm2", "--role", "test", "--prompts", str(prompts), "--filter-report", str(report), "--max-tokens", "1600"]),
     ]
     summary = {"refusals": [], "allowed": {}}
     for name, extra in cases:
