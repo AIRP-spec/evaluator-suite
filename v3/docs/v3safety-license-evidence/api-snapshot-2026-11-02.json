@@ -1,0 +1,27 @@
+{
+ "id": "ByteDance-Seed/Seed-OSS-36B-Instruct",
+ "sha": "497f1dca95ebdec98e41d517b9f060ee753c902f",
+ "lastModified": "2025-08-26T02:33:00.000Z",
+ "gated": false,
+ "tags": [
+  "transformers",
+  "safetensors",
+  "seed_oss",
+  "text-generation",
+  "vllm",
+  "conversational",
+  "license:apache-2.0",
+  "eval-results",
+  "endpoints_compatible",
+  "deploy:azure",
+  "region:us"
+ ],
+ "cardData": {
+  "license": "apache-2.0",
+  "pipeline_tag": "text-generation",
+  "library_name": "transformers",
+  "tags": [
+   "vllm"
+  ]
+ }
+}
