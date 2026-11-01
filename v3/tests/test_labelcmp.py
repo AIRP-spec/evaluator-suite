@@ -49,3 +49,22 @@ def test_selection_respects_sides():
     roles = {L["key"]: L["role"] for L in LAB}
     assert all(roles[k] == "train" for k in sel["label_test_rows"]["pair"])
     assert all(roles[k] == "test" for k in sel["label_train_rows"]["pair"])
+
+
+def test_trio_and_per_class_table_counts_only():
+    mk = lambda v, cse: {"role": None, "P": {"valid_rate": v, "class_set_exact": cse, "min_safety_recall": 1.0, "primitives_exact": cse}}
+    scores = {L["key"]: dict(mk(1.0, 0.5 + i / 100), role=L["role"]) for i, L in enumerate(LAB)}
+    test_keys = [L["key"] for L in LAB if L["role"] == "test"]
+    for k in test_keys[:-2]:
+        scores[k]["P"]["valid_rate"] = 0.90  # only two test-role labelers eligible
+    sel = S.select(scores, LAB)
+    assert sel["label_test_rows"]["trio"] and len(sel["label_test_rows"]["trio"]) == 3
+    assert sel["label_train_rows"]["trio"] is None and sel["label_train_rows"]["trio_stop"]
+    comp = S.load_composition(None, S.COMPOSITION_2A_SHA256)
+    gold = [{"id": "a", "gold": {"stance": "encourages", "objects": ["self_harm"], "qualifiers": []}, "classes": ["self_harm"]}]
+    sc = {"x": {"role": "test", "P": S.score(gold, {"a": gold[0]["gold"]}, comp)}}
+    rows = S.per_class_table(sc)
+    assert len(rows) == len(S.CLASSES)
+    sh = [r for r in rows if r["class"] == "self_harm"][0]
+    assert (sh["tp"], sh["fn"], sh["fp"], sh["recall"], sh["precision"]) == (1, 0, 0, 1.0, 1.0)
+    assert set(rows[0]) == {"labeler", "role", "class", "gold_pos", "tp", "fn", "fp", "recall", "precision"}

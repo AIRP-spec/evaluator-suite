@@ -98,8 +98,26 @@ def select(scores, labelers):
         best = sorted(elig, key=key)
         res[side] = {"labeler_role": labels_side, "candidates": cands, "eligible": elig,
                      "ineligible": [k for k in cands if k not in elig], "ranking": best,
-                     "pair": best[:2] if len(best) >= 2 else None, "tiebreaker": best[2] if len(best) >= 3 else None}
+                     "pair": best[:2] if len(best) >= 2 else None, "tiebreaker": best[2] if len(best) >= 3 else None,
+                     # AMENDMENT-1 (2026-11-01): three labelers on every row; fewer than three eligible = report and stop.
+                     "trio": best[:3] if len(best) >= 3 else None, "trio_stop": len(best) < 3}
     return res
+
+
+def per_class_table(scores):
+    """AMENDMENT-1: per-labeler, per-class recall and precision on P against gold. Counts only, no item text."""
+    rows = []
+    for k, s in scores.items():
+        for c in CLASSES:
+            d = s["P"]["classes"][c]
+            rows.append({"labeler": k, "role": s["role"], "class": c, "gold_pos": d["gold_pos"], "tp": d["tp"], "fn": d["fn"],
+                         "fp": d["fp"], "recall": d["recall"], "precision": d["precision"]})
+    return rows
+
+
+def write_table_tsv(rows, path):
+    cols = ["labeler", "role", "class", "gold_pos", "tp", "fn", "fp", "recall", "precision"]
+    Path(path).write_text("\t".join(cols) + "\n" + "".join("\t".join("" if r[c] is None else str(r[c]) for c in cols) + "\n" for r in rows))
 
 
 def main():
@@ -108,6 +126,7 @@ def main():
     ap.add_argument("--labels-dir", required=True)
     ap.add_argument("--labelers", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--table", help="also write the per-labeler per-class recall/precision table (TSV, counts only)")
     a = ap.parse_args()
     comp = load_composition(None, COMPOSITION_2A_SHA256)
     gold = [json.loads(l) for l in open(a.gold) if l.strip()]
@@ -125,8 +144,12 @@ def main():
                             "W_reported_only": score(W, preds, comp) if W else None,
                             "n_rows_returned": len(rows)}
     out = {"gold_rows": len(gold), "P_rows": len(P), "scores": scores, "selection": select(scores, labelers),
-           "rule": {"valid_min": VALID_MIN, "tie_pp": TIE_PP, "primary": "class_set_exact on P"}}
+           "per_class_table": per_class_table(scores),
+           "rule": {"valid_min": VALID_MIN, "tie_pp": TIE_PP, "primary": "class_set_exact on P",
+                    "amendment": "AMENDMENT-1-THREE-LABELERS.md: trio = top three eligible per side"}}
     Path(a.out).write_text(json.dumps(out, indent=1))
+    if a.table:
+        write_table_tsv(out["per_class_table"], a.table)
     for k, s in scores.items():
         p = s["P"]
         print(k, s["role"], "valid", p["valid"], "/", p["n"], "classset", p["class_set_exact"], "prim_exact", p["primitives_exact"],
