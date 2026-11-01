@@ -124,3 +124,29 @@ def test_a4_non_hp_rows_identical_to_a3():
     for L in ([PROF, PROF, NONE], [PROF, NONE, None], [NONE, NONE, SH]):
         a3 = xside.decide_test_a3(L, NONE, C); a4 = xside.decide_test_a4(L, NONE, C)
         assert {k: a4[k] for k in a3} == a3 and a4["a4_changes"] == []
+
+
+# AMENDMENT-5: train-queue majority with guide-reader
+VIO = {"stance": "depicts", "objects": ["violence_person"], "qualifiers": []}
+
+
+def test_a5_pick_reader():
+    g = {"nemotron-3-super": {"valid_frac": 1.0, "exact": 0.8159}, "qwen3-30b-a3b-2507": {"valid_frac": 1.0, "exact": 0.7186}}
+    assert xside.pick_guide_reader(g) == "nemotron-3-super"  # qwen is a train-side writer family -> ineligible
+
+
+def test_a5_majority_and_tiebreak():
+    d = xside.decide_train_a5(PROF, NONE, PROF, C)
+    assert d["status"] == "decided" and d["final_classes"] == ["profanity"]
+    d = xside.decide_train_a5(PROF, None, NONE, C)  # seed invalid: reader breaks the tie
+    assert d["final_classes"] == []
+
+
+def test_a5_three_way_drops():
+    d = xside.decide_train_a5(PROF, NONE, VIO, C)
+    assert d["status"] == "dropped" and d["drop_reason"].startswith("three_way")
+
+
+def test_a5_cse_and_reader_invalid_drop():
+    assert xside.decide_train_a5(NONE, NONE, CSE_P, C)["drop_reason"] == "cse_flag_any_labeler_unread"
+    assert xside.decide_train_a5(PROF, NONE, None, C)["drop_reason"] == "reader_invalid"

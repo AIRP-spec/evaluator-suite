@@ -569,6 +569,71 @@ def combine_test_a4(items_path, labels_dir, adj_path, out, report, reasons_path=
     return rep
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# AMENDMENT-5 (Justin t207u, 2026-11-01 19:35 NPT): train-queue decision = majority of nemotron (primary), seed-oss
+# (second) and a self-hosted guide-reader (revised guide e5b7b56c, primitives only); reader breaks two-way ties;
+# three-way disagreement drops the row. CSE-risk / CSE-flagged rows are dropped unread.
+A5_DROP_UNREAD = (230, 545)  # queue indexes in QUEUE-train-a3.jsonl (CSE-risk), never read or sent
+GUIDE_READER_CANDIDATES = ("nemotron-3-super", "qwen3-30b-a3b-2507")  # Nemotron preferred if eligible
+TRAIN_WRITER_FAMILIES = ("google-gemma", "zhipu-glm", "mistral", "qwen")
+
+
+def pick_guide_reader(gold: dict) -> str:
+    """gold = {key: {"valid_frac", "exact"}}. Eligible: valid >= 0.95 and family not a train-side writer family
+    (so the reader is cross-family on every queue row). Nemotron if eligible, else best exact match."""
+    ok = [k for k in GUIDE_READER_CANDIDATES if gold[k]["valid_frac"] >= 0.95 and FAMILY[k] not in TRAIN_WRITER_FAMILIES]
+    if not ok:
+        raise SystemExit("no eligible guide-reader")
+    return "nemotron-3-super" if "nemotron-3-super" in ok else max(ok, key=lambda k: gold[k]["exact"])
+
+
+def _cse_flag(p, comp) -> bool:
+    return p is not None and ("child_sexual_exploitation" in compose(p, comp)
+                              or ("sexual_activity" in p["objects"] and "subject_is_minor" in p["qualifiers"]))
+
+
+def decide_train_a5(P, S, R, comp, keys=("nemotron-3-super", "seed-oss-36b", "nemotron-3-super")) -> dict:
+    """P primary, S second, R guide-reader primitives (None = invalid). Returns status decided|dropped."""
+    labs = [P, S, R]
+    if any(_cse_flag(p, comp) for p in labs):
+        return {"status": "dropped", "drop_reason": "cse_flag_any_labeler_unread", "final_primitives": None, "final_classes": None}
+    if R is None:
+        return {"status": "dropped", "drop_reason": "reader_invalid", "final_primitives": None, "final_classes": None}
+    cls = [None if p is None else sorted(compose(p, comp)) for p in labs]
+    valid = [p for p in labs if p is not None]
+    trace = []
+    if len(valid) == 3:
+        if len({p["stance"] for p in valid}) == 3:
+            return {"status": "dropped", "drop_reason": "three_way:stance", "final_primitives": None, "final_classes": None,
+                    "classes_by_labeler": cls}
+        if len({tuple(c) for c in cls}) == 3:
+            return {"status": "dropped", "drop_reason": "three_way:classes", "final_primitives": None, "final_classes": None,
+                    "classes_by_labeler": cls}
+        st = Counter(p["stance"] for p in valid).most_common(1)[0][0]
+        fp = {"stance": st, "objects": [], "qualifiers": []}
+        for f in ("objects", "qualifiers"):
+            fp[f] = sorted({x for p in valid for x in p[f] if sum(x in q[f] for q in valid) >= 2})
+        trace.append("majority_of_3")
+    else:  # one of P/S invalid: the two valid labels; the reader breaks every two-way tie
+        other = P if P is not None else S
+        fp = {"stance": other["stance"] if other["stance"] == R["stance"] else R["stance"], "objects": [], "qualifiers": []}
+        for f in ("objects", "qualifiers"):
+            fp[f] = sorted(set(R[f]))  # agree -> same; disagree -> reader's value
+        trace.append("two_valid_reader_breaks_ties")
+    # AMENDMENT-3/4: a safety fire from a high-precision labeler stands unless the reader records mention/refusal
+    mention = "is_mention_not_use" in R["qualifiers"] and R["stance"] == "describes"
+    for c in SAFETY:
+        src = next((p for k, p, cc in zip(keys, labs, cls) if cc is not None and c in cc and hp(k, c)), None)
+        if src is not None and c not in compose(fp, comp):
+            if mention:
+                trace.append(f"hp_fire_overturned_mention:{c}")
+            else:
+                fp, ch = a4_overlay(fp, src, c); trace.append(f"hp_fire_stands:{c}:" + ",".join(ch))
+    fc = sorted(compose(fp, comp))
+    return {"status": "decided", "drop_reason": None, "final_primitives": fp, "final_classes": fc, "trace": trace,
+            "classes_by_labeler": cls}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     sp = ap.add_subparsers(dest="cmd", required=True)
