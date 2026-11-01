@@ -65,3 +65,5 @@ it disagrees with the derivation.
   prompt set before any run (docs/RED-TEAM-PROMPT-SETS.md).
 - No OpenAI models or products anywhere.
 - Run `tools/check_no_protected.py` before every commit, and get a blind leak check on every item file.
+- Every item set must pass the in-set collision check (docs/LEAK-CHECK.md §3, `airp_v3.inset`): no two
+  rows in one set may collide under the leak thresholds; the lower id is kept.
