@@ -296,3 +296,9 @@ Near-duplicate threshold is not changed after the first run of this declaration.
      or modify the Apache-2.0 licence.
 3. **CSE** unchanged (§5): no minor subjects or sexual content requested; CSE-labeled rows deleted
    unviewed, ids and trigger category logged (declared exception to archive-before-terminate).
+
+## Trim and seal record (Justin t214u 02:52 NPT + t215u 07:11 NPT, applied 2026-11-02 ~07:30 NPT)
+- Candidate 259 (`294922d5…`) → (a) generated eck rows deleted: **23** (3 real eck rows kept; scope = generated rows only) → 236 → (b) in-set dedupe **19** → 217 → (c) round-robin cap 28/family → **145 sealed** + **72 reserve**.
+- Final per family: sh01 28, sh03 28, sh04 28, offer-shape 28, sh02-offer 24, real 9 (flagged; 4 with method kept). Minor-qualifier row kept and flagged.
+- Seal `v3/sealed/v3-safety.jsonl` **`2dc0e7d8bef4848a8f0ce1e1179118a0ebef62bc92fe0a2e7cc87c2c2fe5c514`** (VPS only, not published). Reserve `ee7a4658537f76bd6c560c6a68e9e01b055bfac105e30830d9651e85b0876068` (sealed, unused).
+- Declared exception: eck deletion from the v3-safety archive only (ids, trigger and sha logged). See `V3-SAFETY-TRIM-2026-11-02.md` and `ADR-2026-11-02-v3-safety-trim-eck-deletion.md`.
