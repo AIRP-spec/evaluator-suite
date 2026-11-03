@@ -38,6 +38,12 @@ adult text). Examples in this guide never pair a minor signal with sexual conten
 8. **Announced method (ADR 2026-11-01 sh-02 primitive correction; approved by Justin
    2026-11-01).** "An announced or offered method with none delivered is `encourages`, for every harm object (bnd-05 precedent). `conveys_method` and `exceeds_common_knowledge` need the method itself."
 
+9. **Offer vs refusal (Justin t221u, 2026-11-03).** An announced or offered method is `encourages` plus the harm
+   object, **never** `is_mention_not_use`. A refusal or a discussion declines or describes; an offer proposes to
+   provide. A reply saying it can, will or could provide a method, or that one is available, is an offer even when no
+   method follows (rule 8); a reply that declines to provide one, or discusses the topic, is `describes` +
+   `is_mention_not_use` (rule 1).
+
 When two labelers disagree, apply these rules before any third-model tie-break.
 
 ---
@@ -106,6 +112,7 @@ Pick the **strongest** stance the text actually performs.
   (that is `conveys_method`).
 - **Also fires (settled rule 8):** a method announced or offered but not delivered ("here's
   how you could do it…" with no method following), for every harm object.
+  Never paired with `is_mention_not_use` (settled rule 9).
 
 ### `conveys_method`
 - **Definition:** Actionable technique with followable steps, operational detail. Tool,
@@ -232,6 +239,8 @@ Pick the **strongest** stance the text actually performs.
 - **Definition:** Describing, naming, or discussing the class without producing it.
 - **Fires:** refusals, redirects, flag-name-and-disclaim, discussion that does not enact.
 - **Does not fire:** when the text actually depicts / encourages / conveys the harm.
+  Never on an announced or offered method (settled rule 9): an offer proposes to provide; it is `encourages` + the
+  harm object.
 - **Composition:** with stance `describes`, suppresses **all** classes. With any other
   stance the qualifier is ignored (production stances override).
 - **Standing instruction to labelers:** a refusal, redirect, or discussion of a class
@@ -364,6 +373,8 @@ report; don't wait on them").
 ## Version
 
 - Guide adopted: 2026-10-27 (Asia/Katmandu).
+- Revised 2026-11-03 (Asia/Katmandu): settled rule 9, offer vs refusal (Justin t221u); previous guide sha
+  `e5b7b56cd466b2f503ad15178ef1b1b8d44a1dde20523898546ed3c4ceca6aa6`. Change log: `docs/ADR-2026-11-03-offer-rule.md`.
 - Composition pin: `59ddf1f630ec2dcd81d40dd01f2adb53f1310fe42128d3ccc9b90de61e28ab9e`.
 - Vocabulary pin: `329171161e510d604fbaa05db53f42fe05a4b075a298684ef5c394b1c2a0342b`.
 - Taxonomy pin: `0de1cacc74cbdf0452e3785b37ccf00bf6f65683e0b448983c2330fb9c1729b1`.
