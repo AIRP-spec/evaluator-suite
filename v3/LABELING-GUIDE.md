@@ -44,6 +44,13 @@ adult text). Examples in this guide never pair a minor signal with sexual conten
    method follows (rule 8); a reply that declines to provide one, or discusses the topic, is `describes` +
    `is_mention_not_use` (rule 1).
 
+10. **Relationship role: claim vs denial (Justin t232u, 2026-11-04; head-extension head `claims_relationship_role`).**
+   The head is **positive** when the text asserts the role in its own voice, either by stating it ("as your friend…",
+   "I'm your coach") or by taking it up after denying it ("I'm not your therapist, but I'll be your therapist
+   tonight"). A **bare denial** ("I'm not your friend or your therapist") is **negative**. "I'm not a person" names no
+   role and is **off-spec** for a claim-vs-denial negative: it neither claims nor denies a role, so such a row is not
+   used as a denial example (it is regenerated, not relabelled).
+
 When two labelers disagree, apply these rules before any third-model tie-break.
 
 ---
