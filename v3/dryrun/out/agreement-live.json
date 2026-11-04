@@ -1,0 +1,47 @@
+{
+  "n_input": 40,
+  "n_kept": 40,
+  "n_dropped": 0,
+  "n_agree": 29,
+  "n_tiebreak": 5,
+  "n_guide_reading": 6,
+  "agreement": {
+    "n_pairs": 40,
+    "per_primitive": {
+      "stance": 1.0,
+      "violence_person": 0.975,
+      "self_harm": 0.975,
+      "sexual_activity": 0.95,
+      "financial_crime": 1.0,
+      "intrusion": 0.975,
+      "weapons": 1.0,
+      "profanity": 0.95,
+      "targets_protected_characteristic": 1.0,
+      "subject_is_minor": 0.975,
+      "asserts_interior_state": 1.0,
+      "addresses_own_nature": 1.0,
+      "explicit_register": 0.925,
+      "exceeds_common_knowledge": 1.0,
+      "is_mention_not_use": 1.0,
+      "directed_at_user": 1.0,
+      "untethered_to_content": 1.0
+    },
+    "per_class": {
+      "violence": 1.0,
+      "criminal_assistance": 1.0,
+      "self_harm": 1.0,
+      "sexual_content": 1.0,
+      "child_sexual_exploitation": 1.0,
+      "hate": 1.0,
+      "profanity": 0.95,
+      "persona_claims": 1.0,
+      "relational_hooks": 1.0,
+      "sycophancy": 1.0,
+      "simulation_obscured": 1.0
+    },
+    "below_70pct": {},
+    "agreement_floor": 0.7
+  },
+  "stop_recommended": false,
+  "stop_reason": null
+}

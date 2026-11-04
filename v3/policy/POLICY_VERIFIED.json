@@ -1,0 +1,238 @@
+{
+  "schema": "airp-v3-policy-verified/1",
+  "date": "2026-11-01",
+  "approved_by": "Justin Flores (2026-11-01: self-hosted collection with policy verification first)",
+  "use": "elicitation of responses to published safety prompt sets, for safety evaluation and to train an open classifier on the outputs",
+  "rules": [
+    "verdict must be CLEAR or CLEAR-WITH-CONDITIONS",
+    "role must match",
+    "license_sha256 must equal the sha256 of policy/licenses/<license_doc>",
+    "no model family on both test and train sides",
+    "no OpenAI models"
+  ],
+  "license_dir": "licenses",
+  "models": [
+    {
+      "key": "nemotron-3-super",
+      "hf_id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "revision": "ff433f5493e25d631c9f12b5d55c674229923d02",
+      "role": "test",
+      "verdict": "CLEAR",
+      "conditions": [],
+      "license_name": "NVIDIA Nemotron Open Model License (v. December 15, 2025)",
+      "license_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/",
+      "license_doc": "nvidia-nemotron-open-model-license.terms.txt",
+      "license_doc_source_url": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/",
+      "license_sha256": "409246273b12322fa8b1e6355635970efc34bc8676d9c27f66d0f95e9139cbe7",
+      "model_card": "nemotron-3-super-nvfp4.README.md",
+      "model_card_source_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4/resolve/ff433f5493e25d631c9f12b5d55c674229923d02/README.md",
+      "model_card_sha256": "75a09249ef13176b32cc198bae54d83c234d4bf3f75ec996b59ad81f902b68cd",
+      "retrieval_date": "2026-11-01",
+      "notes": "Verdict covers the Nemotron-3-Super-120B-A12B family; the card at this revision declares license_name nvidia-nemotron-open-model-license. NVFP4 needs a Blackwell GPU. The FP8 sibling (744b1880a37996c5d56bf454ae164dfd74d77c4e, card recorded as nemotron-3-super-fp8.README.md) is the fallback quantization.",
+      "license_doc_kind": "external page; terms span extracted, whitespace-normalised",
+      "alt_revisions": {
+        "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8": {
+          "revision": "744b1880a37996c5d56bf454ae164dfd74d77c4e",
+          "model_card": "nemotron-3-super-fp8.README.md",
+          "model_card_sha256": "7d8cf610376dc7668b788b082b53c4b39229b3b0df5478f5504ba07e6a960228"
+        }
+      }
+    },
+    {
+      "key": "seed-oss-36b",
+      "hf_id": "ByteDance-Seed/Seed-OSS-36B-Instruct",
+      "revision": "497f1dca95ebdec98e41d517b9f060ee753c902f",
+      "role": "test",
+      "verdict": "CLEAR",
+      "conditions": [
+        "thinking_budget 0"
+      ],
+      "license_name": "Apache-2.0",
+      "license_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct/resolve/497f1dca95ebdec98e41d517b9f060ee753c902f/LICENSE.txt",
+      "license_doc": "seed-oss-36b.LICENSE.txt",
+      "license_doc_source_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct/resolve/497f1dca95ebdec98e41d517b9f060ee753c902f/LICENSE.txt",
+      "license_sha256": "41fe2167e8a52d375dd36304db345312bd629addb2e109e47104a7d34a2cf116",
+      "model_card": "seed-oss-36b.README.md",
+      "model_card_source_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct/resolve/497f1dca95ebdec98e41d517b9f060ee753c902f/README.md",
+      "model_card_sha256": "a8b639d3654d3453bed9037cd1470ea6bc43289b1058a71840f8e11a99a6ca49",
+      "retrieval_date": "2026-11-01",
+      "notes": ""
+    },
+    {
+      "key": "seed-oss-36b-base-wosyn",
+      "hf_id": "ByteDance-Seed/Seed-OSS-36B-Base-woSyn",
+      "revision": "0788e4252b6a1d3a6fa8c3b256354982b592a1bb",
+      "role": "test",
+      "verdict": "CLEAR",
+      "conditions": [
+        "base checkpoint: raw completions with the S3 template 'User: {prompt}\\n\\nAssistant:'; chat_template.jinja not used",
+        "S3 pilot only (signed declaration, Justin t210u 2026-11-01 22:01 NPT): evaluation-only, CSE-filtered self_harm prompts"
+      ],
+      "license_name": "Apache-2.0",
+      "license_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Base-woSyn/resolve/0788e4252b6a1d3a6fa8c3b256354982b592a1bb/LICENSE.txt",
+      "license_doc": "seed-oss-36b.LICENSE.txt",
+      "license_doc_source_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Base-woSyn/resolve/0788e4252b6a1d3a6fa8c3b256354982b592a1bb/LICENSE.txt",
+      "license_sha256": "41fe2167e8a52d375dd36304db345312bd629addb2e109e47104a7d34a2cf116",
+      "model_card": "seed-oss-36b-base-wosyn.README.md",
+      "model_card_source_url": "https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Base-woSyn/resolve/0788e4252b6a1d3a6fa8c3b256354982b592a1bb/README.md",
+      "model_card_sha256": "52235cdc07b48c3ef1dc1b0a242b3a9c82d0b73e164200da2ff29bafebb9886e",
+      "retrieval_date": "2026-11-01",
+      "notes": "Licence verdict (Justin t210u): permitted under Apache-2.0; the card's prohibited-uses list (MODEL_CARD.md b87d901f) was read and this evaluation-only, CSE-filtered use is outside it. LICENSE.txt byte-identical to seed-oss-36b (Instruct)."
+    },
+    {
+      "key": "phi-4",
+      "hf_id": "microsoft/phi-4",
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "role": "test",
+      "verdict": "CLEAR",
+      "conditions": [],
+      "license_name": "MIT",
+      "license_url": "https://huggingface.co/microsoft/phi-4/resolve/2db69c1c3e91a05d2c64a3185acfbaf36f744e25/LICENSE",
+      "license_doc": "phi-4.LICENSE",
+      "license_doc_source_url": "https://huggingface.co/microsoft/phi-4/resolve/2db69c1c3e91a05d2c64a3185acfbaf36f744e25/LICENSE",
+      "license_sha256": "c49419617a6070bcb197cfe272f7007fdec3e790dbb529cb995473bd69c0bd51",
+      "model_card": "phi-4.README.md",
+      "model_card_source_url": "https://huggingface.co/microsoft/phi-4/resolve/2db69c1c3e91a05d2c64a3185acfbaf36f744e25/README.md",
+      "model_card_sha256": "4cc56faa6a5bcbde6227789b2ef9aedfde481ca660c8a4b686703aae19b00011",
+      "retrieval_date": "2026-11-01",
+      "notes": ""
+    },
+    {
+      "key": "granite-4.2-8b",
+      "hf_id": "ibm-granite/granite-4.2-8b",
+      "revision": "a7042144125ce5ae64f89610e8289647fc000b9a",
+      "role": "test",
+      "verdict": "CLEAR",
+      "conditions": [
+        "enable_thinking false"
+      ],
+      "license_name": "Apache-2.0 (model card license field; repo has no LICENSE file)",
+      "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+      "license_doc": "granite-4.2-8b.README.md",
+      "license_doc_source_url": "https://huggingface.co/ibm-granite/granite-4.2-8b/resolve/a7042144125ce5ae64f89610e8289647fc000b9a/README.md",
+      "license_sha256": "01396b1a8596586986fea22cfaa86d0255d19113d71fe09e0b69cc2bfa4307da",
+      "model_card": "granite-4.2-8b.README.md",
+      "model_card_source_url": "https://huggingface.co/ibm-granite/granite-4.2-8b/resolve/a7042144125ce5ae64f89610e8289647fc000b9a/README.md",
+      "model_card_sha256": "01396b1a8596586986fea22cfaa86d0255d19113d71fe09e0b69cc2bfa4307da",
+      "retrieval_date": "2026-11-01",
+      "notes": ""
+    },
+    {
+      "key": "qwen3-30b-a3b-2507",
+      "hf_id": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "revision": "0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe",
+      "role": "train",
+      "verdict": "CLEAR",
+      "conditions": [],
+      "license_name": "Apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507/resolve/0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe/LICENSE",
+      "license_doc": "qwen3-30b-a3b-2507.LICENSE",
+      "license_doc_source_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507/resolve/0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe/LICENSE",
+      "license_sha256": "05cab46843576551502bfdf712f84e93e6e9590d9997306ed4f6635ef82811d9",
+      "model_card": "qwen3-30b-a3b-2507.README.md",
+      "model_card_source_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507/resolve/0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe/README.md",
+      "model_card_sha256": "5d25d4b43cdfaf83e3d71df8f3436703ab26d92c07305053be667f577a49bb9e",
+      "retrieval_date": "2026-11-01",
+      "notes": "Non-thinking-only model per card."
+    },
+    {
+      "key": "mistral-small-3.2",
+      "hf_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "revision": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43",
+      "role": "train",
+      "verdict": "CLEAR-WITH-CONDITIONS",
+      "conditions": [
+        "record the model card (license is declared only on the card): recorded here with sha256"
+      ],
+      "license_name": "Apache-2.0 (model card license field; repo has no LICENSE file)",
+      "license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+      "license_doc": "mistral-small-3.2.README.md",
+      "license_doc_source_url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506/resolve/95a6d26c4bfb886c58daf9d3f7332c857cb27b43/README.md",
+      "license_sha256": "48d492d5ded3dfb80ab53033391c7ada71f42037e442758d9eb29fdb08929edb",
+      "model_card": "mistral-small-3.2.README.md",
+      "model_card_source_url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506/resolve/95a6d26c4bfb886c58daf9d3f7332c857cb27b43/README.md",
+      "model_card_sha256": "48d492d5ded3dfb80ab53033391c7ada71f42037e442758d9eb29fdb08929edb",
+      "retrieval_date": "2026-11-01",
+      "notes": ""
+    },
+    {
+      "key": "gemma-4-31b",
+      "hf_id": "google/gemma-4-31B-it",
+      "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+      "role": "train",
+      "verdict": "CLEAR-WITH-CONDITIONS",
+      "conditions": [
+        "no safety-filter bypass (we send published prompts as written, no jailbreak template, no system prompt)"
+      ],
+      "license_name": "Apache-2.0 (Gemma 4 license page)",
+      "license_url": "https://ai.google.dev/gemma/docs/gemma_4_license",
+      "license_doc": "gemma-4.ai-google-dev-license.terms.txt",
+      "license_doc_source_url": "https://ai.google.dev/gemma/docs/gemma_4_license",
+      "license_sha256": "a273a40989a621592709f116cb637c9885da14ba5f503b8af229bb582a4f0ba7",
+      "model_card": "gemma-4-31b-it.README.md",
+      "model_card_source_url": "https://huggingface.co/google/gemma-4-31B-it/resolve/842da3794eaa0b77d5f08bae87a17459d91ff475/README.md",
+      "model_card_sha256": "e209f5c435b1e66055bd6d7c29185103ae8d2027a03a96b359335154f206b82b",
+      "retrieval_date": "2026-11-01",
+      "notes": "",
+      "license_doc_kind": "external page; terms span extracted, whitespace-normalised",
+      "supplementary_docs": {
+        "gemma-prohibited-use-policy.terms.txt": {
+          "source_url": "https://ai.google.dev/gemma/prohibited_use_policy",
+          "sha256": "51e6a0fa552cbed28497171ef880e84c6c40414150627c645db3f2ac98ebc62a"
+        }
+      }
+    },
+    {
+      "key": "glm-4.5-air",
+      "hf_id": "zai-org/GLM-4.5-Air",
+      "revision": "a24ceef6ce4f3536971efe9b778bdaa1bab18daa",
+      "role": "train",
+      "verdict": "CLEAR",
+      "conditions": [
+        "enable_thinking false"
+      ],
+      "license_name": "MIT (model card license field)",
+      "license_url": "https://opensource.org/license/mit",
+      "license_doc": "glm-4.5-air.README.md",
+      "license_doc_source_url": "https://huggingface.co/zai-org/GLM-4.5-Air/resolve/a24ceef6ce4f3536971efe9b778bdaa1bab18daa/README.md",
+      "license_sha256": "fdcdf454bbb54db5cf1a1dd83152feb6555c4962678cae5c7658bf9cd0261e8b",
+      "model_card": "glm-4.5-air.README.md",
+      "model_card_source_url": "https://huggingface.co/zai-org/GLM-4.5-Air/resolve/a24ceef6ce4f3536971efe9b778bdaa1bab18daa/README.md",
+      "model_card_sha256": "fdcdf454bbb54db5cf1a1dd83152feb6555c4962678cae5c7658bf9cd0261e8b",
+      "retrieval_date": "2026-11-01",
+      "notes": ""
+    }
+  ],
+  "excluded": [
+    {
+      "key": "llama-3.3-70b",
+      "hf_id": "meta-llama/Llama-3.3-70B-Instruct",
+      "verdict": "DOUBT",
+      "reason": "Llama 3.3 Community License + Acceptable Use Policy: doubt about elicitation terms (standing brief: don't run, report)."
+    },
+    {
+      "key": "deepseek-v4-flash",
+      "hf_id": "deepseek-ai/DeepSeek-V4-Flash",
+      "verdict": "OUT",
+      "reason": "too large to self-host on one rented GPU within the per-pod cap"
+    },
+    {
+      "key": "mimo-v2.5",
+      "hf_id": "XiaomiMiMo/MiMo-V2.5",
+      "verdict": "OUT",
+      "reason": "too large to self-host on one rented GPU within the per-pod cap"
+    },
+    {
+      "key": "kimi-k2.5",
+      "hf_id": "moonshotai/Kimi-K2.5",
+      "verdict": "OUT",
+      "reason": "too large to self-host on one rented GPU within the per-pod cap"
+    },
+    {
+      "key": "qwen3-235b-a22b-2507",
+      "hf_id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "verdict": "OUT",
+      "reason": "too large; also same family as a training model"
+    }
+  ]
+}

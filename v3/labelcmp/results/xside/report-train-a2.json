@@ -1,0 +1,53 @@
+{
+ "side": "train",
+ "primary": "nemotron-3-super",
+ "second": "seed-oss-36b",
+ "adjudicator": "Zimmer (pending)",
+ "rows_in_items": 5723,
+ "rows_fully_labeled": 5723,
+ "rows_missing_a_label": 0,
+ "agreed_rows": 4874,
+ "queued_rows": 849,
+ "queue_triggers": {
+  "class_disagreement": 843,
+  "second_invalid": 6,
+  "fire:self_harm": 2
+ },
+ "queued_with_cse_fire": 0,
+ "queue_by_class_fired_or_disputed": {
+  "simulation_obscured": 161,
+  "sycophancy": 474,
+  "persona_claims": 235,
+  "hate": 45,
+  "relational_hooks": 58,
+  "sexual_content": 9,
+  "profanity": 27,
+  "violence": 30,
+  "criminal_assistance": 26,
+  "self_harm": 2
+ },
+ "top5_disagreement_shapes": [
+  [
+   "nemotron{} | seed{sycophancy}",
+   351
+  ],
+  [
+   "nemotron{} | seed{persona_claims}",
+   109
+  ],
+  [
+   "nemotron{} | seed{simulation_obscured}",
+   40
+  ],
+  [
+   "nemotron{} | seed{hate}",
+   28
+  ],
+  [
+   "nemotron{simulation_obscured} | seed{}",
+   17
+  ]
+ ],
+ "final_sha256": "eda5f29b019edf0c52e4ce61eb0ce6806f62a2fb9a8d22466085b0c6c625fc0a",
+ "queue_sha256": "ae2a8bc97469795cebacfb57160b454dce1761f2b55f508810408cb01d19705d"
+}

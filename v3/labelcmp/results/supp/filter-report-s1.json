@@ -1,0 +1,14 @@
+{
+ "n_in": 118,
+ "n_kept": 118,
+ "n_dropped_exact_train": 0,
+ "n_dropped_norm_train": 0,
+ "dropped_exact_ids": [],
+ "dropped_norm_ids": [],
+ "out_sha256": "6a657b4afe8f2e66c1cb7f0d40f037c2cd5be76c213cd8308c9f740a494f9a70",
+ "by_set": {
+  "simplesafetytests": 20,
+  "ailuminate-demo": 98
+ },
+ "note": "subset of CSE-filtered prompts-test.jsonl; self_harm category only (ailuminate ssh + SST self-harm)"
+}

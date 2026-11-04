@@ -1,0 +1,141 @@
+{
+  "refusals": [
+    {
+      "case": "unlisted model",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: fixture/unlisted-model is not listed in POLICY_VERIFIED; refusing to collect"
+    },
+    {
+      "case": "DOUBT verdict",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: fixture/doubt-model verdict is 'DOUBT', not CLEAR; refusing (doubt about terms: report, don't run)"
+    },
+    {
+      "case": "license hash mismatch",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: license sha256 mismatch for fixture/badhash-model: file 4f97533ad95b1b2f != recorded 0000000000000000; refusing"
+    },
+    {
+      "case": "wrong role",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: HuggingFaceTB/SmolLM2-135M-Instruct is a test model; --role train refused"
+    },
+    {
+      "case": "test prompt set on training model",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: row oasst2-firstturn:1b12f145-91f8-4457-a773-8e0f97073103: prompt set 'oasst2-firstturn' belongs to the test side, model role is train; refusing"
+    },
+    {
+      "case": "training prompt set on test model",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: row donotanswer:dry: prompt set 'donotanswer' belongs to the train side, model role is test; refusing"
+    },
+    {
+      "case": "prompts sha != filter report",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: prompts file sha256 97a28029ca729617 does not match filter_cse report out_sha256 0000000000000000; refusing"
+    },
+    {
+      "case": "OpenAI model",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: OpenAI models are forbidden: openai/gpt-oss-20b"
+    },
+    {
+      "case": "max tokens over 800",
+      "exit_code": 2,
+      "refused": true,
+      "message": "BLOCKED: max tokens is capped at 800 by the v3 plan"
+    }
+  ],
+  "allowed": {
+    "exit_codes": [
+      0,
+      0
+    ],
+    "run1": {
+      "n_skipped_resume": 0,
+      "n_written": 4,
+      "n_errors": 0,
+      "stop_reason": "complete",
+      "errors": [],
+      "elapsed_seconds": 23.3,
+      "n_remaining": 0,
+      "model_key": "tiny-smollm2",
+      "n_prompts_selected": 4,
+      "host": "box-cpu/none/tiny-openai-server",
+      "prompts_sha256": "97a28029ca729617d73b6f83a0e01daf3c6551cab6064d621ce3ffac68ebf93d"
+    },
+    "run2_resume": {
+      "n_skipped_resume": 4,
+      "n_written": 4,
+      "n_errors": 0,
+      "stop_reason": "complete",
+      "errors": [],
+      "elapsed_seconds": 20.3,
+      "n_remaining": 0,
+      "model_key": "tiny-smollm2",
+      "n_prompts_selected": 8,
+      "host": "box-cpu/none/tiny-openai-server",
+      "prompts_sha256": "97a28029ca729617d73b6f83a0e01daf3c6551cab6064d621ce3ffac68ebf93d"
+    },
+    "n_rows": 8,
+    "n_unique_ids": 8,
+    "provenance_keys": [
+      "backend",
+      "finish_reason",
+      "host",
+      "license_sha256",
+      "model",
+      "model_key",
+      "policy_verdict",
+      "policy_verified_sha256",
+      "prompt_id",
+      "prompt_kind",
+      "prompt_set",
+      "prompts_sha256",
+      "provider_terms_ref",
+      "quantization",
+      "response_id",
+      "revision",
+      "role",
+      "sampling",
+      "thinking_forced_off",
+      "thinking_markers_in_content",
+      "timestamp",
+      "token_counts"
+    ],
+    "provenance_example": {
+      "model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "quantization": "fp32 (CPU dry-run)",
+      "role": "test",
+      "host": "box-cpu/none/tiny-openai-server",
+      "backend": "local-vllm",
+      "prompt_set": "oasst2-firstturn",
+      "prompt_id": "oasst2-firstturn:1b12f145-91f8-4457-a773-8e0f97073103",
+      "token_counts": {
+        "prompt": 41,
+        "completion": 48,
+        "total": 89,
+        "reasoning": 0
+      },
+      "thinking_forced_off": {
+        "enable_thinking": false
+      },
+      "provider_terms_ref": "Apache-2.0; dry-run fixture",
+      "license_sha256": "4f97533ad95b1b2fea15fbc075c01b94578ebdd7c8138888fa43fa3abd530dc4",
+      "policy_verdict": "CLEAR",
+      "prompts_sha256": "97a28029ca729617d73b6f83a0e01daf3c6551cab6064d621ce3ffac68ebf93d"
+    }
+  },
+  "all_refusals_ok": true,
+  "fixture_prompts_sha256": "97a28029ca729617d73b6f83a0e01daf3c6551cab6064d621ce3ffac68ebf93d"
+}

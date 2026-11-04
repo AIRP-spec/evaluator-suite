@@ -1,0 +1,143 @@
+{
+ "composition_sha": "59ddf1f630ec2dcd81d40dd01f2adb53f1310fe42128d3ccc9b90de61e28ab9e",
+ "gold": "gold-revised-overlay (rh-denial pure-denial)",
+ "n_relabeled_items": 72,
+ "guide_sha256": "e5b7b56cd466b2f503ad15178ef1b1b8d44a1dde20523898546ed3c4ceca6aa6",
+ "per_labeler": {
+  "qwen3-30b-a3b-2507": {
+   "n_labeled": 853,
+   "tp": 18,
+   "fp": 46,
+   "fn": 2,
+   "tn": 807,
+   "recall": 0.9,
+   "precision": 0.28125,
+   "gold_rh_pos": 20,
+   "n_overlaid": 72,
+   "n_attempted": 72,
+   "n_invalid_new": 0,
+   "before": {
+    "n_labeled": 853,
+    "tp": 7,
+    "fp": 48,
+    "fn": 13,
+    "tn": 805,
+    "recall": 0.35,
+    "precision": 0.12727272727272726,
+    "sources": [
+     "/workspace/labcmp/rescore1/labels-qwen3-30b-a3b-2507.jsonl",
+     "/workspace/labcmp/out/labels-qwen3-30b-a3b-2507.jsonl",
+     "/workspace/labcmp/rescore2/labels-qwen3-30b-a3b-2507.jsonl"
+    ]
+   }
+  },
+  "gemma-4-31b": {
+   "n_labeled": 873,
+   "tp": 19,
+   "fp": 0,
+   "fn": 1,
+   "tn": 853,
+   "recall": 0.95,
+   "precision": 1.0,
+   "gold_rh_pos": 20,
+   "n_overlaid": 72,
+   "n_attempted": 72,
+   "n_invalid_new": 0,
+   "before": {
+    "n_labeled": 873,
+    "tp": 16,
+    "fp": 3,
+    "fn": 4,
+    "tn": 850,
+    "recall": 0.8,
+    "precision": 0.8421052631578947,
+    "sources": [
+     "/workspace/labcmp/rescore1/labels-gemma-4-31b.jsonl",
+     "/workspace/labcmp/out/labels-gemma-4-31b.jsonl",
+     "/workspace/labcmp/rescore2/labels-gemma-4-31b.jsonl"
+    ]
+   }
+  },
+  "phi-4": {
+   "n_labeled": 791,
+   "tp": 11,
+   "fp": 5,
+   "fn": 9,
+   "tn": 848,
+   "recall": 0.55,
+   "precision": 0.6875,
+   "gold_rh_pos": 20,
+   "n_overlaid": 41,
+   "n_attempted": 72,
+   "n_invalid_new": 31,
+   "before": {
+    "n_labeled": 789,
+    "tp": 9,
+    "fp": 3,
+    "fn": 11,
+    "tn": 850,
+    "recall": 0.45,
+    "precision": 0.75,
+    "sources": [
+     "/workspace/labcmp/rescore1/labels-phi-4.jsonl",
+     "/workspace/labcmp/out/labels-phi-4.jsonl",
+     "/workspace/labcmp/rescore2/labels-phi-4.jsonl"
+    ]
+   }
+  },
+  "mistral-small-3.2": {
+   "n_labeled": 870,
+   "tp": 20,
+   "fp": 7,
+   "fn": 0,
+   "tn": 846,
+   "recall": 1.0,
+   "precision": 0.7407407407407407,
+   "gold_rh_pos": 20,
+   "n_overlaid": 72,
+   "n_attempted": 72,
+   "n_invalid_new": 0,
+   "before": {
+    "n_labeled": 870,
+    "tp": 16,
+    "fp": 8,
+    "fn": 4,
+    "tn": 845,
+    "recall": 0.8,
+    "precision": 0.6666666666666666,
+    "sources": [
+     "/workspace/labcmp/rescore1/labels-mistral-small-3.2.jsonl",
+     "/workspace/labcmp/out/labels-mistral-small-3.2.jsonl",
+     "/workspace/labcmp/rescore2/labels-mistral-small-3.2.jsonl"
+    ]
+   }
+  },
+  "granite-4.2-8b": {
+   "n_labeled": 732,
+   "tp": 16,
+   "fp": 4,
+   "fn": 4,
+   "tn": 849,
+   "recall": 0.8,
+   "precision": 0.8,
+   "gold_rh_pos": 20,
+   "n_overlaid": 47,
+   "n_attempted": 72,
+   "n_invalid_new": 25,
+   "before": {
+    "n_labeled": 729,
+    "tp": 7,
+    "fp": 1,
+    "fn": 13,
+    "tn": 852,
+    "recall": 0.35,
+    "precision": 0.875,
+    "sources": [
+     "/workspace/labcmp/out/labels-granite-4.2-8b.jsonl",
+     "/workspace/labcmp/rescore2/labels-granite-4.2-8b.jsonl",
+     "/workspace/labcmp/out2/labels-granite-4.2-8b.jsonl"
+    ]
+   }
+  }
+ }
+}

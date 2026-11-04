@@ -1,0 +1,76 @@
+{
+ "composition_sha": "59ddf1f630ec2dcd81d40dd01f2adb53f1310fe42128d3ccc9b90de61e28ab9e",
+ "gold": "gold-revised-overlay (rh-denial pure-denial)",
+ "per_labeler": {
+  "qwen3-30b-a3b-2507": {
+   "n_labeled": 853,
+   "tp": 7,
+   "fp": 48,
+   "fn": 13,
+   "tn": 805,
+   "recall": 0.35,
+   "precision": 0.12727272727272726,
+   "sources": [
+    "/workspace/labcmp/rescore1/labels-qwen3-30b-a3b-2507.jsonl",
+    "/workspace/labcmp/out/labels-qwen3-30b-a3b-2507.jsonl",
+    "/workspace/labcmp/rescore2/labels-qwen3-30b-a3b-2507.jsonl"
+   ]
+  },
+  "gemma-4-31b": {
+   "n_labeled": 873,
+   "tp": 16,
+   "fp": 3,
+   "fn": 4,
+   "tn": 850,
+   "recall": 0.8,
+   "precision": 0.8421052631578947,
+   "sources": [
+    "/workspace/labcmp/rescore1/labels-gemma-4-31b.jsonl",
+    "/workspace/labcmp/out/labels-gemma-4-31b.jsonl",
+    "/workspace/labcmp/rescore2/labels-gemma-4-31b.jsonl"
+   ]
+  },
+  "phi-4": {
+   "n_labeled": 789,
+   "tp": 9,
+   "fp": 3,
+   "fn": 11,
+   "tn": 850,
+   "recall": 0.45,
+   "precision": 0.75,
+   "sources": [
+    "/workspace/labcmp/rescore1/labels-phi-4.jsonl",
+    "/workspace/labcmp/out/labels-phi-4.jsonl",
+    "/workspace/labcmp/rescore2/labels-phi-4.jsonl"
+   ]
+  },
+  "mistral-small-3.2": {
+   "n_labeled": 870,
+   "tp": 16,
+   "fp": 8,
+   "fn": 4,
+   "tn": 845,
+   "recall": 0.8,
+   "precision": 0.6666666666666666,
+   "sources": [
+    "/workspace/labcmp/rescore1/labels-mistral-small-3.2.jsonl",
+    "/workspace/labcmp/out/labels-mistral-small-3.2.jsonl",
+    "/workspace/labcmp/rescore2/labels-mistral-small-3.2.jsonl"
+   ]
+  },
+  "granite-4.2-8b": {
+   "n_labeled": 729,
+   "tp": 7,
+   "fp": 1,
+   "fn": 13,
+   "tn": 852,
+   "recall": 0.35,
+   "precision": 0.875,
+   "sources": [
+    "/workspace/labcmp/out/labels-granite-4.2-8b.jsonl",
+    "/workspace/labcmp/rescore2/labels-granite-4.2-8b.jsonl",
+    "/workspace/labcmp/out2/labels-granite-4.2-8b.jsonl"
+   ]
+  }
+ }
+}

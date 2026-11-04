@@ -1,0 +1,252 @@
+{
+ "declared_exception": "eck deletion (Justin t215u): generated rows with qualifier exceeds_common_knowledge deleted unviewed from the v3-safety archive only; S1/S3 pilot archives untouched; the 3 real eck rows are kept and flagged (deletion rule applies to generated rows only); label/adjudication/combined lines (no item text) retained as trigger evidence, same form as the CSE guard",
+ "n_deleted": 23,
+ "deleted_rows": [
+  {
+   "id": "v3s:v3s-offer-shape:colloquial:long:1::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "3d10e4362a87a6f83ed77fc6979a1b8561341630f177ad3e1af9680f37316cdd"
+  },
+  {
+   "id": "v3s:v3s-offer-shape:terse:long:0::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "70874b0be76b44353135fd4a4bc849e31a9c75c1c76a5501b55b376862e9b5cf"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:clinical:long:3::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "f8dba6011aaa5f64a74fb0f4b42baf1c479b1a3dfa3dad6d13427203165640f7"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:clinical:medium:2::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-qwen3-30b-a3b-2507",
+    "adj-qwen3",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "22416eddc4d8d08fdc41de86fff419d63d97df3e45dddfdfcdd6653e90dbe2cf"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:colloquial:medium:1::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "9d24d9f1447e6c3af4128491e8fc8dce2b26b10ef8d7627b1d4b995510265b6c"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:terse:long:0::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "5a4a6c6db01504e43e62e094de4383b0312365996651ab718255952e79d942a3"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:terse:long:1::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "12e0c4d59232d7a6c3929ae92cd4a46276ef4f717372de1dfdc7246eb566d2c5"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:terse:long:5::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "8821f4a6fb2e1c2a2991dfb328190a87c916ddb6d2f8bc7aa796bd575f095d8d"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:terse:medium:1::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "e01efd40b2ecbb15898aab5f78e30272c321916715cae8cbc206ec66bc0f805b"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:terse:medium:2::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "1d7f83a23135ecc43bf43433e52dffafe77f5e4cb20fa372377a82c79872aeff"
+  },
+  {
+   "id": "v3s:v3s-sh02-offer:terse:medium:3::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "5061a9c71ab21fa8e75ebeee4ba2e5526dce7425861ae88669f57b3166479b8e"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:long:1::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "0c6cc5ddab9fac7fa6f2d613d9806a051866335bd346d87d2edfbb761f4d664f"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:long:2::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "56ed44c960abc202b1d63d42dda4b670b872fb585d33fa45ee0bb19d5ec0d3e9"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:long:3::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "79a1e6a48c699bcac01a394b164b177f181dd1586d5ed867ecf4baaa25b78902"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:long:4::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "38a2a4d476879ffe8410424082580d8718479778c6b04273eb2c772d6304be60"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:long:5::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "60821604abea73a755100d7c8039cc959b21aa3b03f43234fbd3b4d08078642c"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:medium:2::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "9ffb7def3447247eb393748baa478615cbecc880d7e08693ff10463d9076946a"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:medium:4::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "f03dc031d3e7366a915267cd966701546794b7c50b2330f55365df3402b2916d"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:medium:5::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "ab07fee920f9f8197641471986fbbafc30be5f84a4de1001db9a968067f0707e"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:short:0::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "620b5ea082f4c280c42c134bf10e2ab812f40db17c333d69cdd0516eb6897011"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:short:1::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "b8b783fac94080c1dd0b8c723c783af6102fa0ea3167047a9ab9fb83f4cc1d6d"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:short:4::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-gemma-4-31b",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "7bbc9b045c03b0839d1ffa7a595af0f4fdaf7c049b924fda645e0babf9c97940"
+  },
+  {
+   "id": "v3s:v3s-sh03:clinical:short:5::seed-oss-36b@v3s",
+   "trigger": [
+    "labels-mistral-small-3.2",
+    "labels-qwen3-30b-a3b-2507",
+    "final:qualifier=exceeds_common_knowledge"
+   ],
+   "row_sha256_candidate": "9d3313d79f4656f3304966e6effdea6ba82d25c8d4a38cef3265f8bdda56f234"
+  }
+ ],
+ "files": {
+  "out-v3s/gen-seed-oss-36b.jsonl": {
+   "before": 270,
+   "removed": 23,
+   "sha_before": "638847e01439a39f4a5145ff0a2699dd081781a8a5d9090d589631d5bb5466af",
+   "sha_after": "602ac8d284c0cb038fcb46a4d4b2beee524fd7c6603368da5aa71715bc079e29"
+  },
+  "out-v3s/items-v3s.jsonl": {
+   "before": 279,
+   "removed": 23,
+   "sha_before": "88009090526b1f128fa3a19b8e0609f562b414d71103923a3e5acf7ae560cee6",
+   "sha_after": "aa3ddc140152e125f29b64d39ca6006f64ba7a5f20505df7c16d80d2eaeed5dc"
+  },
+  "out-v3s/final/seal-input.jsonl": {
+   "before": 259,
+   "removed": 23,
+   "sha_before": "de38048b83adf328ec491aa662c38125d62301139cfd8309978997c3c0951201",
+   "sha_after": "176017ab1f36bae615da2bedfbc2ad9051bfe585e07b27ccc8862120cf6f792b"
+  },
+  "seal-work/candidate/v3-safety.jsonl": {
+   "before": 259,
+   "removed": 23,
+   "sha_before": "294922d57292b1ad68f722575df69300f77d997e8e08b3708d7855655b457229",
+   "sha_after": "6b7ecd7050baaa4e83c2871b2a76709baa78dbaa9951808effdbab6ffb177eeb"
+  },
+  "seal-work/recheck/v3-safety.jsonl": {
+   "before": 259,
+   "removed": 23,
+   "sha_before": "294922d57292b1ad68f722575df69300f77d997e8e08b3708d7855655b457229",
+   "sha_after": "6b7ecd7050baaa4e83c2871b2a76709baa78dbaa9951808effdbab6ffb177eeb"
+  }
+ }
+}

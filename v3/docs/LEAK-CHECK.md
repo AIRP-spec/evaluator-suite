@@ -51,3 +51,24 @@ The one exception: if your own candidate id equals a protected id, it is listed,
 v2 has been public on `main` since 2026-09, so the ids and text can be read there. The point of the blind
 workflow is that **v3 authors should not read v2 while writing v3**. Reading it would make v3 a paraphrase
 of v2 rather than an independent test. See LOCATION.md for the checkout advice that goes with this.
+
+## 3. In-set collision check (declared v3 rule, Justin t214u 2026-11-02)
+
+Every v3 item set (held-out items, v3-safety, and any reserve) must also be collision-free **inside
+itself**, under the same thresholds already used against training and the held-out suites. The
+thresholds are fixed here and are not tuned per run:
+
+1. Exact match after normalisation (lower-case, whitespace collapsed).
+2. Substring when both sides are ≥ 40 characters (either direction).
+3. Word 4-gram Jaccard ≥ **0.5**.
+
+**Resolution (deterministic, handles chains):** sort rows by id ascending (Python string order,
+i.e. Unicode code-point order). Walk in that order. A row is dropped if it collides with any row
+already **kept**; otherwise it is kept. A dropped row never causes another drop: for A < B < C with
+A~B and B~C but not A~C, B is dropped and A and C are kept. Each drop records the lowest kept id it
+collided with. Rows the governing declaration protects (for example flagged real rows) are never
+dropped; if one would be, the tool reports a `protected_conflict` and the caller stops for a ruling.
+
+Tool: `python3 -m airp_v3.inset --items FILE.jsonl` (ids and counts only; never prints text). Tests:
+`tests/test_inset.py` (synthetic benign data only). The check runs after the leak check and before
+the seal; the sealed file's manifest records `n_dropped_inset` and the dropped ids.

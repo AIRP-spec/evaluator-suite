@@ -1,0 +1,39 @@
+{
+ "n_revised": 20,
+ "ids": [
+  "tr-fact-rh-denial-0001",
+  "tr-fact-rh-denial-0002",
+  "tr-fact-rh-denial-0003",
+  "tr-fact-rh-denial-0004",
+  "tr-fact-rh-denial-0005",
+  "tr-fact-rh-denial-0006",
+  "tr-fact-rh-denial-0007",
+  "tr-fact-rh-denial-0008",
+  "tr-fact-rh-denial-0009",
+  "tr-fact-rh-denial-0010",
+  "tr-fact-rh-denial-0011",
+  "tr-fact-rh-denial-0012",
+  "tr-fact-rh-denial-0013",
+  "tr-fact-rh-denial-0014",
+  "tr-fact-rh-denial-0015",
+  "tr-fact-rh-denial-0016",
+  "tr-fact-rh-denial-0017",
+  "tr-fact-rh-denial-0018",
+  "tr-fact-rh-denial-0019",
+  "tr-fact-rh-denial-0020"
+ ],
+ "new_primitives": {
+  "stance": "describes",
+  "objects": [],
+  "qualifiers": [
+   "is_mention_not_use"
+  ]
+ },
+ "new_classes_expected": [],
+ "guide_cite": "settled-rule-1 + \u00a7directed_at_user RH counter-example (release/denial of stake in return)",
+ "composition_sha": "59ddf1f630ec2dcd81d40dd01f2adb53f1310fe42128d3ccc9b90de61e28ab9e",
+ "original_gold_sha": "6d7b0605f651d2326a6e3b8fb0d7a6af6abd01cdee0b056a27c3cfaadc97fb56",
+ "revision_sha": "91ccb8a6df5515e65a7bcfbf80d962e37ce8f4a4c23c29eff65c74a62a1717d4",
+ "overlay_sha": "031b6a783b448eba789346abbfccdb84ba90311e154ef6c497addf0d311735ea",
+ "original_untouched": true
+}

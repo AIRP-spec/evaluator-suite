@@ -1,0 +1,115 @@
+{
+  "report": "v3 Phase B test-side re-collection at max_tokens 1500 (amendment 2026-11-01b, commit 6163d6e)",
+  "generated_npt": "2026-11-01T09:10+0545",
+  "contents": "counts and sha256 only; no item text",
+  "pods": [
+    {
+      "name": "v3c-t1",
+      "pod_id": "c7dt3blqo6xr0u",
+      "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "rate_usd_h": 2.49,
+      "start_npt": "2026-11-01T07:57:20+0545",
+      "stop_npt": "2026-11-01T08:30:21+0545",
+      "balance_before": 49.789,
+      "balance_after": 48.568,
+      "cost_usd": 1.37,
+      "models": [
+        "phi-4",
+        "granite-4.2-8b",
+        "seed-oss-36b"
+      ],
+      "archive": "out-v3c-t1 sha256sum -c 11/11 OK"
+    },
+    {
+      "name": "v3c-t2",
+      "pod_id": "ntnptcg1rpet9c",
+      "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "rate_usd_h": 2.49,
+      "start_npt": "2026-11-01T08:31:30+0545",
+      "stop_npt": "2026-11-01T08:59:39+0545",
+      "balance_before": 48.568,
+      "balance_after": 47.361,
+      "cost_usd": 1.208,
+      "models": [
+        "nemotron-3-super"
+      ],
+      "archive": "out-v3c-t2 sha256sum -c 5/5 OK"
+    }
+  ],
+  "models": {
+    "phi-4": {
+      "rows": 715,
+      "sets": {
+        "oasst2-firstturn": 309,
+        "ailuminate-demo": 270,
+        "xstest": 116,
+        "simplesafetytests": 20
+      },
+      "truncated_at_1500": 0,
+      "truncated_at_800": 21,
+      "reasoning_markers_stripped": 0,
+      "empty_after_strip": 0,
+      "errors": 0,
+      "sha256": "1a658924649144b95eb3d05db17d6c14e136c9162eec9331514bc5c7fcad7dae"
+    },
+    "granite-4.2-8b": {
+      "rows": 714,
+      "sets": {
+        "oasst2-firstturn": 329,
+        "ailuminate-demo": 251,
+        "xstest": 122,
+        "simplesafetytests": 12
+      },
+      "truncated_at_1500": 266,
+      "truncated_at_800": 513,
+      "reasoning_markers_stripped": 49,
+      "empty_after_strip": 0,
+      "errors": 0,
+      "sha256": "f451c6293da281419cd833d385173720e265f000b40699dabd313dba3cc148a6"
+    },
+    "seed-oss-36b": {
+      "rows": 715,
+      "sets": {
+        "oasst2-firstturn": 318,
+        "ailuminate-demo": 274,
+        "xstest": 100,
+        "simplesafetytests": 23
+      },
+      "truncated_at_1500": 21,
+      "truncated_at_800": 142,
+      "reasoning_markers_stripped": 2,
+      "empty_after_strip": 0,
+      "errors": 0,
+      "sha256": "43d1ecb357d5ead102a599498140e896a20738ce9b973ac2a020de4ccb0e753b"
+    },
+    "nemotron-3-super": {
+      "rows": 715,
+      "sets": {
+        "oasst2-firstturn": 311,
+        "ailuminate-demo": 278,
+        "xstest": 102,
+        "simplesafetytests": 24
+      },
+      "truncated_at_1500": 125,
+      "truncated_at_800": 314,
+      "reasoning_markers_stripped": 0,
+      "empty_after_strip": 0,
+      "errors": 0,
+      "sha256": "ea013c517aae23a3c8aef5b74ccd2936e6c899302c8d53a40359459594c19129"
+    }
+  },
+  "checks": [
+    "prompt_id sets identical to the 800-cap test rows per model; no duplicates",
+    "revision, prompts_sha256, provider_terms_ref identical to 800-cap run",
+    "system_prompt null; reasoning tokens 0; policy_verdict CLEAR on all rows",
+    "max_tokens_cap 1500 on every row",
+    "800-cap outputs unchanged (sha256 match VPS out-v3c-p* archives)"
+  ],
+  "spend": {
+    "collection_usd": 9.2,
+    "phase3_usd": 4.75,
+    "cumulative_usd": 13.95,
+    "stop_at_usd": 30,
+    "balance_after": 47.36
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "n_in": 10,
+  "n_kept": 4,
+  "n_dropped_category": 3,
+  "n_dropped_keyword": 3,
+  "n_dropped_total": 6,
+  "dropped_category_ids": [
+    "fx-cat-cse-001",
+    "fx-cat-cse-002",
+    "fx-cat-abuse-001"
+  ],
+  "dropped_keyword_ids": [
+    "fx-kw-age-001",
+    "fx-kw-school-001",
+    "fx-kw-teen-001"
+  ],
+  "dropped": [
+    {
+      "id": "fx-cat-cse-001",
+      "reason": "category:cse"
+    },
+    {
+      "id": "fx-cat-cse-002",
+      "reason": "category:sexual (minor)"
+    },
+    {
+      "id": "fx-cat-abuse-001",
+      "reason": "category:child abuse"
+    },
+    {
+      "id": "fx-kw-age-001",
+      "reason": "keyword:\\b(?:1[0-7]|[1-9])\\s*(?:year|yr|y/o|years?)\\s*old\\b"
+    },
+    {
+      "id": "fx-kw-school-001",
+      "reason": "keyword:\\b(?:elementary|middle\\s*school|high\\s*school|grade\\s*(?:[1-9]|1[0-2])|classroom|kindergarten|preschool)\\b"
+    },
+    {
+      "id": "fx-kw-teen-001",
+      "reason": "keyword:\\b(?:teen|teens|teenager|teenagers|preteen|pre-teen)\\b"
+    }
+  ],
+  "category_substrings": [
+    "cse",
+    "child sexual",
+    "sexual (minor)",
+    "sexual minor",
+    "sexual/minor",
+    "child abuse",
+    "child_exploitation",
+    "child-exploitation",
+    "csam",
+    " pedophil"
+  ],
+  "keyword_pattern_count": 11
+}

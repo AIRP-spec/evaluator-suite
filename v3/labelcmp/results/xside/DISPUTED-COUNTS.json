@@ -1,0 +1,19 @@
+{
+ "a2_disputed": {
+  "child_sexual_exploitation": 35,
+  "self_harm": 62
+ },
+ "a2_sent_and_stood": {
+  "child_sexual_exploitation": {
+   "sent": 36,
+   "stood": 1
+  },
+  "self_harm": {
+   "sent": 66,
+   "stood": 4
+  }
+ },
+ "a3_disputed": {
+  "self_harm": 30
+ }
+}

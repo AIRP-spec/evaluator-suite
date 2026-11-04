@@ -1,0 +1,13 @@
+{
+ "schema": "airp-v3-labelcmp-labelers/1",
+ "note": "Candidates = every POLICY_VERIFIED CLEAR model that fits one RTX PRO 6000 96 GB pod. glm-4.5-air is verified but needs ~110 GB (FP8) and is not run in this comparison (one pod, $4 cap). role = the model's verified collection side; a train-role labeler may only label test-side text and the reverse (Justin 2026-11-01).",
+ "labelers": [
+  {"key": "qwen3-30b-a3b-2507", "family": "qwen", "role": "train", "hf_id": "Qwen/Qwen3-30B-A3B-Instruct-2507", "revision": "0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe"},
+  {"key": "mistral-small-3.2", "family": "mistral", "role": "train", "hf_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506", "revision": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43"},
+  {"key": "gemma-4-31b", "family": "google-gemma", "role": "train", "hf_id": "google/gemma-4-31B-it", "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475"},
+  {"key": "phi-4", "family": "microsoft-phi", "role": "test", "hf_id": "microsoft/phi-4", "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25"},
+  {"key": "granite-4.2-8b", "family": "ibm-granite", "role": "test", "hf_id": "ibm-granite/granite-4.2-8b", "revision": "a7042144125ce5ae64f89610e8289647fc000b9a"},
+  {"key": "seed-oss-36b", "family": "bytedance-seed", "role": "test", "hf_id": "ByteDance-Seed/Seed-OSS-36B-Instruct", "revision": "497f1dca95ebdec98e41d517b9f060ee753c902f"},
+  {"key": "nemotron-3-super", "family": "nvidia-nemotron", "role": "test", "hf_id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4", "revision": "ff433f5493e25d631c9f12b5d55c674229923d02"}
+ ]
+}

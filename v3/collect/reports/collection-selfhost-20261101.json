@@ -1,0 +1,258 @@
+{
+ "date": "2026-11-01",
+ "amendment_commit": "bdca341aa4e359d776b9e6fb49f9d256c20e1be0",
+ "prompts": {
+  "test": {
+   "sha256": "976843d4072d80ca5771a51f12ba014e4bf69b09542470e42ec4d6e897489e4b",
+   "rows": 2859,
+   "covered": 2859
+  },
+  "train": {
+   "sha256": "90cc559591fe779b7622653d981c690c3fbe6bf4f1588b3329fe666d1c5aed58",
+   "rows": 5723,
+   "covered": 5723
+  }
+ },
+ "models": {
+  "gemma-4-31b": {
+   "side": "train",
+   "rows": 1431,
+   "unique": 1431,
+   "missing_prov": 0,
+   "think_marker_rows": 0,
+   "finish": {
+    "stop": 1307,
+    "length": 124
+   },
+   "sets": {
+    "aegis2-train": 1082,
+    "harmbench-text": 45,
+    "donotanswer": 235,
+    "strongreject-custom": 33,
+    "jbb-behaviors": 36
+   },
+   "sha256": "564e3ceef2261015fbe2f7a53bd301ca47c42b23cb3ed5bd57dc4fa3c2e0222f"
+  },
+  "glm-4.5-air": {
+   "side": "train",
+   "rows": 1430,
+   "unique": 1430,
+   "missing_prov": 0,
+   "think_marker_rows": 1,
+   "finish": {
+    "stop": 666,
+    "length": 764
+   },
+   "sets": {
+    "aegis2-train": 1065,
+    "donotanswer": 233,
+    "strongreject-custom": 54,
+    "harmbench-text": 41,
+    "jbb-behaviors": 37
+   },
+   "sha256": "9660e1f10dc94a477ffe193cbfd857150f2a907ede36f5098eee81902c406c2e"
+  },
+  "granite-4.2-8b": {
+   "side": "test",
+   "rows": 714,
+   "unique": 714,
+   "missing_prov": 0,
+   "think_marker_rows": 30,
+   "finish": {
+    "stop": 201,
+    "length": 513
+   },
+   "sets": {
+    "ailuminate-demo": 251,
+    "oasst2-firstturn": 329,
+    "xstest": 122,
+    "simplesafetytests": 12
+   },
+   "sha256": "8d3f9574fad1b01ed28869d5d9a5cd13bbea4e80ab8085d6588897201d89a386"
+  },
+  "mistral-small-3.2": {
+   "side": "train",
+   "rows": 1431,
+   "unique": 1431,
+   "missing_prov": 0,
+   "think_marker_rows": 0,
+   "finish": {
+    "stop": 1309,
+    "length": 122
+   },
+   "sets": {
+    "aegis2-train": 1063,
+    "donotanswer": 226,
+    "jbb-behaviors": 54,
+    "strongreject-custom": 46,
+    "harmbench-text": 42
+   },
+   "sha256": "efe3898b274bac34f1771655451308e137f3e3396103cf0572c5d4b1bdefbcbc"
+  },
+  "nemotron-3-super": {
+   "side": "test",
+   "rows": 715,
+   "unique": 715,
+   "missing_prov": 0,
+   "think_marker_rows": 0,
+   "finish": {
+    "stop": 401,
+    "length": 314
+   },
+   "sets": {
+    "oasst2-firstturn": 311,
+    "ailuminate-demo": 278,
+    "xstest": 102,
+    "simplesafetytests": 24
+   },
+   "sha256": "900d3754a8e73ec7126fc09bb0561e919063eee55af3418a89d57d1d406a9384"
+  },
+  "phi-4": {
+   "side": "test",
+   "rows": 715,
+   "unique": 715,
+   "missing_prov": 0,
+   "think_marker_rows": 0,
+   "finish": {
+    "stop": 694,
+    "length": 21
+   },
+   "sets": {
+    "ailuminate-demo": 270,
+    "oasst2-firstturn": 309,
+    "xstest": 116,
+    "simplesafetytests": 20
+   },
+   "sha256": "b01feb909d2335f78d10a039c6a2d1d25819b695d777b37a9163660cab9858c3"
+  },
+  "qwen3-30b-a3b-2507": {
+   "side": "train",
+   "rows": 1431,
+   "unique": 1431,
+   "missing_prov": 0,
+   "think_marker_rows": 0,
+   "finish": {
+    "stop": 1296,
+    "length": 135
+   },
+   "sets": {
+    "aegis2-train": 1085,
+    "harmbench-text": 63,
+    "donotanswer": 207,
+    "jbb-behaviors": 40,
+    "strongreject-custom": 36
+   },
+   "sha256": "5178c2b810c3708d5bce3a7374c395b60815e8cd9893e50c31f45e64da39eb60"
+  },
+  "seed-oss-36b": {
+   "side": "test",
+   "rows": 715,
+   "unique": 715,
+   "missing_prov": 0,
+   "think_marker_rows": 2,
+   "finish": {
+    "stop": 573,
+    "length": 142
+   },
+   "sets": {
+    "oasst2-firstturn": 318,
+    "xstest": 100,
+    "ailuminate-demo": 274,
+    "simplesafetytests": 23
+   },
+   "sha256": "872b99f743c7f363a784967b2244b0279bb9286c78edabc5adfb59e026ad7b25"
+  }
+ },
+ "pods": [
+  [
+   "v3c-p1",
+   "7fqdmwcae2ssel",
+   "L40S",
+   1.09,
+   "01:59:27",
+   "02:23:04",
+   56.43,
+   56.026,
+   0.429,
+   "phi-4, granite-4.2-8b"
+  ],
+  [
+   "v3c-p2",
+   "bku041bovr07hz",
+   "RTX PRO 6000 Server",
+   2.49,
+   "02:24:40",
+   "02:32:29",
+   56.026,
+   55.713,
+   0.324,
+   "none (ssh lost during box reboot)"
+  ],
+  [
+   "v3c-p2b",
+   "d73cfks2c97lh2",
+   "RTX PRO 6000 Server",
+   2.49,
+   "02:39:56",
+   "03:05:00",
+   55.668,
+   54.761,
+   1.04,
+   "seed-oss-36b; qwen failed (JSONL splitlines bug, fixed a8f1aac)"
+  ],
+  [
+   "v3c-p3",
+   "ggtqt8gnx8e86j",
+   "RTX PRO 6000 Server",
+   2.49,
+   "03:08:42",
+   "03:59:38",
+   54.613,
+   52.605,
+   2.114,
+   "qwen3-30b-a3b-2507, mistral-small-3.2, gemma-4-31b"
+  ],
+  [
+   "v3c-p4",
+   "nf99swppnz3bo0",
+   "RTX PRO 6000 Server",
+   2.49,
+   "04:00:37",
+   "04:39:11",
+   52.605,
+   50.97,
+   1.635,
+   "nemotron-3-super (NVFP4; retry with --max-num-seqs 256)"
+  ],
+  [
+   "v3c-p5",
+   "hgh69ukmbb5ysa",
+   "H200 (community)",
+   3.59,
+   "04:40:33",
+   "04:57:56",
+   50.97,
+   49.89,
+   1.08,
+   "glm-4.5-air (fp8 online)"
+  ]
+ ],
+ "pod_columns": [
+  "name",
+  "pod_id",
+  "gpu",
+  "usd_per_hr",
+  "start_NPT",
+  "stop_NPT",
+  "balance_before",
+  "balance_after",
+  "cost_usd",
+  "models"
+ ],
+ "collection_spend_usd": 6.62,
+ "phase3_spend_usd": 4.75,
+ "cumulative_usd": 11.37,
+ "stop_threshold_usd": 30,
+ "archive": "Nepal VPS /root/primitives-evaluator/v3-collect-20261101/out-v3c-*/ (sha256sum -c all OK; box==VPS for all 8 jsonl)",
+ "note": "counts and ids/hashes only; no prompt or response text"
+}
